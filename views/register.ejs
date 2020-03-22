@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('includes/head'); %>
+
+<body>
+  <%- include('includes/nav'); %>
+  <div class="container mt-5">
+    <h1>Registration</h1>
+    <% if (message) { %>
+      <div class="alert alert-success" role="alert">
+        <%= message %>
+      </div>
+    <% } %>
+    <form method="POST" action="/register">
+      <div class="form-group">
+        <label for="name">Name<sup class="text-danger">*</sup></label>
+        <input type="text" class="form-control" id="name" name="name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address<sup class="text-danger">*</sup></label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" id="password">
+      </div>
+
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <%- include('includes/footer'); %>
+</body>
+
+</html>
