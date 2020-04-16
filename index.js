@@ -2,6 +2,8 @@ const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 require('./utils/db.config')
+const MongoStore = require('connect-mongo')(session)
+const mongoDbConnection = require('./utils/db.config')
 const passport = require('passport')
 require('./utils/authStategies/localStrategy')
 
@@ -15,7 +17,8 @@ app.use(session({
   secret: '788a154e2a8d07c4cafdee4a7d6dff2d90ab2586',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false },
+  store: new MongoStore({ mongooseConnection: mongoDbConnection })
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -23,7 +26,6 @@ app.use(passport.session())
 app.use('/', authRoutes)
 
 app.get('/', (req, res) => {
-  req.session.views = (req.session.views || 0) + 1
   console.log('User:', req.user)
   return res.render('index')
 })
