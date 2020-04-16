@@ -4,6 +4,16 @@ const { addUser } = require('../modules/users/service/userService')
 const { registerSchema } = require('../modules/users/validations/authValidation')
 const { joiErrorFormatter, mongooseErrorFormatter } = require('../utils/validationFormatter')
 
+const m1 = (req, res, next) => {
+  req.user = 'Guest'
+  next()
+}
+
+const m2 = (req, res, next) => {
+  console.log(req.url)
+  next()
+}
+
 /**
  * Shows page for user registration
  */
@@ -61,7 +71,9 @@ router.get('/login', (req, res) => {
 /**
  * Logs in a user
  */
-router.post('/login', (req, res) => {
+router.post('/login', m1, m2, (req, res) => {
+  console.log(req.user)
+
   return res.render('login', {
     message: {
       type: 'success',
@@ -71,5 +83,6 @@ router.post('/login', (req, res) => {
     errors: {}
   })
 })
+
 
 module.exports = router
