@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('includes/head'); %>
+
+<body>
+  <%- include('includes/nav'); %>
+  <div class="container mt-5">
+    <h1>Login</h1>
+    <% if (message.type) { %>
+      <div class="alert alert-<%= message.type === 'success' ? 'success' : 'danger' %>" role="alert">
+        <%= message.body %>
+      </div>
+    <% } %>
+    <form method="POST" action="/login">
+
+      <div class="form-group">
+        <label for="email">Email address<sup class="text-danger">*</sup></label>
+        <input
+          type="email"
+          class="form-control <%= errors.email ? 'is-invalid' : '' %>"
+          id="email"
+          name="email"
+          value="<%= formData.email %>"
+          maxlength="128"
+          required
+        >
+        <% if (errors.email) { %>
+          <div class="invalid-feedback">
+            <%= errors.email[0] %>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password<sup class="text-danger">*</sup></label>
+        <input type="password" name="password" class="form-control <%= errors.password ? 'is-invalid' : '' %>" id="password" required>
+        <% if (errors.password) { %>
+          <div class="invalid-feedback">
+            <%= errors.password[0] %>
+          </div>
+        <% } %>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <%- include('includes/footer'); %>
+</body>
+
+</html>
