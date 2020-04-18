@@ -11,6 +11,7 @@ describe('Make sure that status is 200', () => {
     chai.request(app)
       .get('/')
       .end((err, res) => {
+        if (err) return done(err)
         res.should.have.status(200)
         res.body.should.be.a('object')
         done()
@@ -18,12 +19,12 @@ describe('Make sure that status is 200', () => {
   })
 })
 
-
 describe('Make sure register fails on no data', () => {
   it('should return 400', (done) => {
     chai.request(app)
       .post('/register')
       .end((err, res) => {
+        if (err) return done(err)
         res.should.have.status(400)
         // res.body.should.be.a('object')
         done()
