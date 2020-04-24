@@ -65,10 +65,43 @@ router.get('/login', guestMiddleware, flasherMiddleware, (req, res) => {
 /**
  * Logs in a user
  */
-router.post('/login', guestMiddleware, passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login'
-}))
+router.post('/login', guestMiddleware, (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error('Err:', err)
+      req.session.flashData = {
+        message: {
+          type: 'error',
+          body: 'Login failed'
+        }
+      }
+      return res.redirect('/login')
+    }
+
+    if (!user) {
+      req.session.flashData = {
+        message: {
+          type: 'error',
+          body: info.error
+        }
+      }
+      return res.redirect('/login')
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error('Err:', err)
+        req.session.flashData = {
+          message: {
+            type: 'error',
+            body: 'Login failed'
+          }
+        }
+      }
+      return res.redirect('/homepage')
+    })
+  })(req, res, next)
+})
 
 /**
  * Logs out a user
