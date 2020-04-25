@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/x-store', {
+const config = require('./config')
+mongoose.connect(config.mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
