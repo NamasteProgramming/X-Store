@@ -22,6 +22,7 @@ app.use(session({
   cookie: { secure: false },
   store: new MongoStore({ mongooseConnection: mongoDbConnection })
 }))
+app.use(express.static('public'))
 app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -38,6 +39,10 @@ app.get('/', flasherMiddleware, (req, res) => {
 
 app.get('/homepage', authMiddleware, (req, res) => {
   return res.send(`welcome ${req.user.name}`)
+})
+
+app.use((req, res, next) => {
+  res.status(404).render("404")
 })
 
 app.listen(3000, () => {
