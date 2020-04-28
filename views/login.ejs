@@ -5,7 +5,7 @@
 <body>
   <%- include('includes/nav'); %>
   <div class="container mt-5">
-    <h1>Login</h1>
+    <h1>Login <%= message.body %></h1>
     <% if (message.type) { %>
       <div class="alert alert-<%= message.type === 'success' ? 'success' : 'danger' %>" role="alert">
         <%= message.body %>

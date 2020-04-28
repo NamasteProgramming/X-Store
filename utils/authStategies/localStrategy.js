@@ -7,9 +7,9 @@ passport.use(new LocalStrategy({
 }, async (email, password, done) => {
   try {
     const user = await User.findOne({ email })
-    if (!user) return done(null, false, { error: 'User not found' })
+    if (!user) return done(null, false, { message: 'User not found' })
     if (await user.checkPassword(password)) return done(null, user)
-    return done(null, false, { error: 'Incorrect password' })
+    return done(null, false, { message: 'Incorrect password' })
   } catch (e) {
     return done(e)
   }
