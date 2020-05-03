@@ -1,0 +1,13 @@
+//- Displays validation errors after the fields
+mixin err(errors)
+  if errors
+    - for (let i = 0; i < errors.length; i++)
+      .invalid-feedback #{errors[i]}
+
+//- Display an alert (success/error)
+mixin alert(message)
+  if message.type
+    .alert(
+      class=message.type === 'success' ? 'alert-success' : 'alert-danger',
+      role="alert"
+    ) #{message.body}

@@ -15,7 +15,7 @@ const app = express()
 const config = require('./utils/config')
 
 app.use(bodyParser.urlencoded({ extended: false }))
-app.set('view engine', 'ejs')
+app.set('view engine', 'pug')
 // app.set('trust proxy', 1)
 app.use(session({
   secret: '788a154e2a8d07c4cafdee4a7d6dff2d90ab2586',

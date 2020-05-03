@@ -1,0 +1,34 @@
+extends partials/layout
+block content
+  .container.mt-5
+    h1 Login
+    +alert(message)
+
+    form#loginForm(method='POST' action='/login')
+      .form-group
+        label(for='email')
+          | Email address
+          sup.text-danger *
+        input#email.form-control(
+          class=errors.email ? 'is-invalid': '',
+          value=formData.email
+          type='email',
+          name='email',
+          maxlength='128',
+          required
+        )
+        +err(errors.email)
+
+      .form-group
+        label(for='password')
+          | Password
+          sup.text-danger *
+        input#password.form-control(
+          class=errors.password ? 'is-invalid': '',
+          type='password',
+          name='password',
+          required
+        )
+        +err(errors.password)
+
+      button#submit.btn.btn-primary(type='submit') Submit
