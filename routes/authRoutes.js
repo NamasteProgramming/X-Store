@@ -67,7 +67,6 @@ router.get('/login', guestMiddleware, flasherMiddleware, (req, res) => {
  */
 router.post('/login', guestMiddleware, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
-    console.log(err, user, info)
     if (err) {
       console.error('Err:', err)
       req.session.flashData = {

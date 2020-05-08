@@ -35,7 +35,7 @@ const userSchema = mongoose.Schema({
  * Validates unique email
  */
 userSchema.path('email').validate(async (email) => {
-  const emailCount = await mongoose.models.users.countDocuments({ email })
+  const emailCount = await mongoose.models.User.countDocuments({ email })
   return !emailCount
 }, 'Email already exists')
 
@@ -53,6 +53,6 @@ userSchema.methods.checkPassword = async function (password) {
   return result
 }
 
-const User = mongoose.model('users', userSchema)
+const User = mongoose.model('User', userSchema)
 
 module.exports = User

@@ -28,23 +28,34 @@ app.use(express.static('public'))
 app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
-app.locals.message = {}
-app.locals.formData = {}
-app.locals.errors = {}
+
+/**
+ * Global middleware to make logged in user available to the views
+ */
+app.use((req, res, next) => {
+  res.locals.users = req.isAuthenticated() ? req.user : null
+  next()
+})
+
+/**
+ * App level locals
+ */
+app.locals.message = {} // Used in displaying alert
+app.locals.formData = {} // For prefilling data on form validation
+app.locals.errors = {} // Form validation errors
 
 app.use('/', authRoutes)
 
 app.get('/', flasherMiddleware, (req, res) => {
-  console.log(req.method)
   return res.render('index')
 })
 
 app.get('/homepage', authMiddleware, (req, res) => {
-  return res.send(`welcome ${req.user.name}`)
+  return res.render('dashboard')
 })
 
 app.use((req, res, next) => {
-  res.status(404).render("404")
+  res.status(404).render('404')
 })
 
 app.listen(config.port, () => {
