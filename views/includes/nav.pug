@@ -14,18 +14,23 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
         a.nav-link(href='/')
           | Home
           span.sr-only (current)
-      li.nav-item.active
-        a.nav-link(href='/register')
-          | Register
-          span.sr-only (current)
-      li.nav-item.active
-        a.nav-link(href='/login')
-          | Login
-          span.sr-only (current)
-      li.nav-item.active
-        a.nav-link(href='/logout')
-          | Logout
-          span.sr-only (current)
+      if !user
+        li.nav-item.active
+          a.nav-link(href='/register')
+            | Register
+            span.sr-only (current)
+
+        li.nav-item.active
+          a.nav-link(href='/login')
+            | Login
+            span.sr-only (current)
+
+      if user
+        li.nav-item.active
+          a.nav-link(href='/logout')
+            | Logout
+            span.sr-only (current)
+
       li.nav-item
         a.nav-link(href='#') Link
       li.nav-item

@@ -33,8 +33,8 @@ app.use(passport.session())
  * Global middleware to make logged in user available to the views
  */
 app.use((req, res, next) => {
-  res.locals.users = req.isAuthenticated() ? req.user : null
-  next()
+  res.locals.user = req.isAuthenticated() ? req.user : null
+  return next()
 })
 
 /**
