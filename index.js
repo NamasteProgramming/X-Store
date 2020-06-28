@@ -11,6 +11,7 @@ require('./utils/authStategies/localStrategy')
 const authMiddleware = require('./middlewares/authMiddleware')
 const flasherMiddleware = require('./middlewares/flasherMiddleware')
 const authRoutes = require('./routes/authRoutes')
+const categoryRoutes = require('./routes/categoryRoutes')
 const app = express()
 const config = require('./utils/config')
 
@@ -40,11 +41,13 @@ app.use((req, res, next) => {
 /**
  * App level locals
  */
+app.locals.title = 'X Store'
 app.locals.message = {} // Used in displaying alert
 app.locals.formData = {} // For prefilling data on form validation
 app.locals.errors = {} // Form validation errors
 
 app.use('/', authRoutes)
+app.use('/', categoryRoutes)
 
 app.get('/', flasherMiddleware, (req, res) => {
   return res.render('index')

@@ -1,0 +1,65 @@
+extends ../partials/layout
+block content
+  .container.mt-5
+    h1 Add Category
+    +alert(message)
+
+    form#registerForm(method='POST' action='/register')
+      .form-group
+        label(for='name')
+          | Name
+          sup.text-categoryRoutesnger *
+        input#name.form-control(
+          class=errors.name ? 'is-invalid': '',
+          value=formData.name,
+          type='text',
+          name='name',
+          maxlength='64',
+          minlength='2'
+          required
+        )
+        +err(errors.name)
+
+      .form-group
+        label(for='email')
+          | Email address
+          sup.text-danger *
+        input#email.form-control(
+          class=errors.email ? 'is-invalid' : '',
+          value=formData.email
+          type='email',
+          name='email',
+          aria-describedby='emailHelp',
+          maxlength='128',
+          required
+        )
+        +err(errors.email)
+        small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+
+      .form-group
+        label(for='password')
+          | Password
+          sup.text-danger *
+        input#password.form-control(
+          class=errors.password ? 'is-invalid' : '',
+          type='password'
+          name='password'
+          required
+        )
+        +err(errors.password)
+
+      .form-group
+        label(for='repeat_password')
+          | Repeat Password
+          sup.text-danger *
+        input.form-control#repeat_password(
+          type='password',
+          name='repeat_password',
+          required
+        )
+
+      .form-group.form-check
+        input.form-check-input#agree(type='checkbox')
+        label.form-check-label(for='agree') I agree
+
+      button#submit.btn.btn-primary(type='submit') Submit

@@ -1,0 +1,36 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(http-equiv="x-ua-compatible" content="ie=edge")
+    title #{title}
+    block head_css_before
+    link(rel="stylesheet" href="panel/plugins/fontawesome-free/css/all.min.css")
+    link(rel="stylesheet" href="panel/dist/css/adminlte.min.css")
+    link(href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet")
+    block head_css_after
+    block head_js
+  body.hold-transition.sidebar-mini
+    .wrapper
+      include ./partials/topnav.pug
+      include ./partials/sidenav.pug
+
+      .content-wrapper
+        block content
+      aside.control-sidebar.control-sidebar-dark: .p-3
+        h5 Title
+        p Sidebar content
+      footer.main-footer
+        .float-right.d-none.d-sm-inline
+          | Anything you want
+        strong
+          | Copyright © 2014-2019
+          a(href="/") AdminLTE.io
+          | .
+        |  All rights reserved.
+    block body_js_before
+    script(src="panel/plugins/jquery/jquery.min.js")
+    script(src="panel/plugins/bootstrap/js/bootstrap.bundle.min.js")
+    script(src="panel/dist/js/adminlte.min.js")
+    block body_js_after

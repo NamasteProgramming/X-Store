@@ -12,7 +12,9 @@ const flasherMiddleware = require('../middlewares/flasherMiddleware')
  * Shows page for user registration
  */
 router.get('/register', guestMiddleware, flasherMiddleware, (req, res) => {
-  return res.render('register')
+  return res.render('auth/register', {
+    title: 'Register'
+  })
 })
 
 /**
@@ -59,7 +61,9 @@ router.post('/register', guestMiddleware, async (req, res) => {
  * Shows page for user login
  */
 router.get('/login', guestMiddleware, flasherMiddleware, (req, res) => {
-  return res.render('login')
+  return res.render('auth/login', {
+    title: 'Login'
+  })
 })
 
 /**

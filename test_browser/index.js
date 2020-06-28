@@ -6,7 +6,7 @@ const config = require('../utils/config')
  * Base url, may change if you want to test live system
  */
 const baseUrl = `http://localhost:${config.port}`
-const sleepTime = 1
+const sleepTime = 3000
 const slowMoTime = 1
 
 /**

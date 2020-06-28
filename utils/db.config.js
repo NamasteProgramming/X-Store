@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const config = require('./config')
 mongoose.connect(config.mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 })
 
 mongoose.connection.once('open', () => {
