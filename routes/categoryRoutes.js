@@ -9,8 +9,8 @@ const flasherMiddleware = require('../middlewares/flasherMiddleware')
 /**
  * Shows page for add category page
  */
-router.get('/category', flasherMiddleware, (req, res) => {
-  return res.render('category/add')
+router.get('/category/create', flasherMiddleware, (req, res) => {
+  return res.render('category/create')
 })
 
 /**

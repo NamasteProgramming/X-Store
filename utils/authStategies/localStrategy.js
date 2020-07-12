@@ -2,6 +2,9 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('../../modules/users/models/User')
 
+/**
+ * Logins a user with email and password
+ */
 passport.use(new LocalStrategy({
   usernameField: 'email'
 }, async (email, password, done) => {

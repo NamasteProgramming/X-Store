@@ -50,15 +50,15 @@ app.use('/', authRoutes)
 app.use('/', categoryRoutes)
 
 app.get('/', flasherMiddleware, (req, res) => {
-  return res.render('index')
+  return res.render('pages/homepage')
 })
 
-app.get('/homepage', authMiddleware, (req, res) => {
-  return res.render('dashboard')
+app.get('/dashboard', authMiddleware, (req, res) => {
+  return res.render('dashboard/dashboard')
 })
 
 app.use((req, res, next) => {
-  res.status(404).render('404')
+  res.status(404).render('pages/404')
 })
 
 app.listen(config.port, () => {

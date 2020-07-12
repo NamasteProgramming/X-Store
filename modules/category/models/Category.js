@@ -41,7 +41,7 @@ const categorySchema = mongoose.Schema({
   /**
    * Filters that applies to this category
    */
-  filters: [{
+  properties: [{
     /**
      * Filter name like RAM, Storage
      */
@@ -54,7 +54,7 @@ const categorySchema = mongoose.Schema({
      * Optional
      * Possible choices for filter like 1GB, 2GB
      */
-    choices: [choicesSchema],
+    filters: [choicesSchema],
 
     /**
      * Is it required on product
@@ -73,13 +73,13 @@ const categorySchema = mongoose.Schema({
         /**
          * What kind of input is shown to product detail input
          */
-        enum: ['numberInput', 'textInput', 'selectOne', 'selectMultiple']
+        enum: ['fractionalNumberInput', 'completeNumberInput', 'textInput', 'selectOne', 'selectMultiple']
       },
 
       /**
        * Available values for filter
        */
-      choices: [choicesSchema]
+      propertyChoices: [choicesSchema]
     }
   }],
 

@@ -1,3 +1,7 @@
+/**
+ * This middleware used for echoing conent on the page
+ */
+
 const flasherMiddleware = (req, res, next) => {
   if (req.method === 'GET') {
     if (req.session.flashData) {

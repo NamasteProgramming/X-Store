@@ -1,3 +1,7 @@
+/**
+ * Formates joi validation errors
+ * @param {Object} rawErrors Error returned from Joi
+ */
 const joiErrorFormatter = (rawErrors) => {
   const errors = {}
   const details = rawErrors.details
@@ -7,6 +11,10 @@ const joiErrorFormatter = (rawErrors) => {
   return errors
 }
 
+/**
+ * Formates mongoose validation errors
+ * @param {Object} rawErrors Error returned from mongoose
+ */
 const mongooseErrorFormatter = (rawErrors) => {
   const errors = {}
   const details = rawErrors.errors

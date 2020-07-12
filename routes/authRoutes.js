@@ -102,7 +102,7 @@ router.post('/login', guestMiddleware, (req, res, next) => {
           }
         }
       }
-      return res.redirect('/homepage')
+      return res.redirect('/dashboard')
     })
   })(req, res, next)
 })

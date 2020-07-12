@@ -1,13 +1,13 @@
 nav.main-header.navbar.navbar-expand.navbar-white.navbar-light
   ul.navbar-nav
     li.nav-item: a.nav-link(data-widget="pushmenu" href="#" role="button"): i.fas.fa-bars
-    li.nav-item.d-none.d-sm-inline-block: a.nav-link(href="index3.html") Home
-    li.nav-item.d-none.d-sm-inline-block: a.nav-link(href="#") Contact
+    li.nav-item.d-none.d-sm-inline-block: a.nav-link(href="/dashboard") Dashboard
+    //- li.nav-item.d-none.d-sm-inline-block: a.nav-link(href="#") Contact
   form.form-inline.ml-3: .input-group.input-group-sm
     input.form-control.form-control-navbar(type="search" placeholder="Search" aria-label="Search")
     .input-group-append: button.btn.btn-navbar(type="submit"): i.fas.fa-search
   ul.navbar-nav.ml-auto
-    li.nav-item.dropdown
+    //- li.nav-item.dropdown
       a.nav-link(data-toggle="dropdown" href="#")
         i.far.fa-comments
         span.badge.badge-danger.navbar-badge 3
@@ -49,7 +49,8 @@ nav.main-header.navbar.navbar-expand.navbar-white.navbar-light
               |  4 Hours Ago
         .dropdown-divider
         a.dropdown-item.dropdown-footer(href="#") See All Messages
-    li.nav-item.dropdown
+
+    //- li.nav-item.dropdown
       a.nav-link(data-toggle="dropdown" href="#")
         i.far.fa-bell
         span.badge.badge-warning.navbar-badge 15
@@ -72,6 +73,7 @@ nav.main-header.navbar.navbar-expand.navbar-white.navbar-light
           span.float-right.text-muted.text-sm 2 days
         .dropdown-divider
         a.dropdown-item.dropdown-footer(href="#") See All Notifications
+
     li.nav-item
       a.nav-link(data-widget="control-sidebar" data-slide="true" href="#" role="button")
         i.fas.fa-th-large

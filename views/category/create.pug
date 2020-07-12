@@ -1,0 +1,140 @@
+extends ../master/panel/layout
+block content
+  .content-header: .container-fluid: .row.mb-2
+    .col-sm-6: h1.m-0.text-dark Create Category
+    .col-sm-6: ol.breadcrumb.float-sm-right
+      li.breadcrumb-item: a(href="/dashboard") Home
+      li.breadcrumb-item.active Category
+
+  .content: .container-fluid: .card#app: form(
+    role='form'
+    method="POST"
+    v-on:submit.prevent="saveCategory"
+  )
+    .card-header.d-flex.justify-content-between.align-items-center
+      h3.flex-fill.card-title Create Category
+
+    .card-body
+      .row: .col-md-12: .form-group
+        label(for='name')
+          | Name
+          sup.text-danger *
+        input.form-control#name(
+          type='text'
+          maxlength='32'
+          minlength='2'
+          placeholder='Enter Category Name'
+          v-model="category.name"
+        )
+
+      .row: .col-md-12: .form-group
+        label(for='description')
+          | Description
+          sup.text-danger *
+        textarea.form-control#description(
+          placeholder='Enter Category Description'
+          v-model="category.description"
+        )
+
+      .row: .col-md-12: .form-group
+        label(for='seoDescription')
+          | SEO Description (120-150 characters)
+          sup.text-danger *
+        textarea.form-control#seoDescription(
+          placeholder='Enter SEO Description (120-150 characters)'
+          data-toggle="tooltip"
+          data-html="true"
+          title="<em>Tooltip</em> <u>with</u> <b>HTML</b>"
+          v-model="category.seoDescription"
+        )
+      hr
+      .row
+        .col-6
+          h2 Properties
+        .col-6
+          button.btn.btn-primary.float-right(@click="addNewProperty" type="button") Add Property
+
+      .row.mb-4(v-for="(property, index) in category.properties" :key="index")
+        .col-md-6: .form-group
+          label(:for="'property_name_' + index")
+            | Name
+            sup.text-danger *
+          input.form-control(
+            :id="'property_name_' + index"
+            type='text'
+            v-model="property.name"
+          )
+
+        .col-md-4.col-xl-5: .form-group
+          label(:for="'property_type_' + index")
+            | Type
+            sup.text-danger *
+          select.form-control.custom-select(
+            :id="'property_type_' + index"
+            v-model="property.input.type"
+          )
+            option(
+              v-for="(typeOption, i) in inputTypeOptions"
+              :value="typeOption.value"
+              :key="i"
+            ) {{ typeOption.label }}
+
+        .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end
+          button.btn.btn-danger.btn-block(@click="removeProperty(index)" type="button")
+            i.fa.fa-trash.fa-fw
+            span.d-xl-none Delete
+
+        .col-md-12: .custom-control.custom-checkbox
+          input.custom-control-input(
+            type='checkbox'
+            v-model="property.required"
+            :id="'property_required_' + index"
+          )
+          label.custom-control-label(:for="'property_required_' + index") Required
+
+        .col-md-12: .custom-control.custom-checkbox
+          input.custom-control-input(
+            type='checkbox'
+            v-model="property.filterable"
+            :id="'property_filterable_' + index"
+          )
+          label.custom-control-label(:for="'property_filterable_' + index") Filterable
+
+        .col-md-12.mt-2(
+          v-if="property.input.type === 'selectOne'"
+
+        ): .card
+          .card-header.py-2: .row
+              .col-6.d-flex.align-items-center: h2.m-0.h5 {{ property.name }} Choices
+              .col-6.d-flex.align-items-center.justify-content-end: button.btn.btn-primary(@click="addNewChoice(property.input.propertyChoices)" type="button") Add Choice
+
+          .card-body: .row(v-for="(choice, choiceIndex) in property.input.propertyChoices" :key="choiceIndex")
+            .col-md-6.my-1
+              label(:for="'choice_name_' + index + '_' + choiceIndex")
+                | Name
+              sup.text-danger *
+              input.form-control(
+                :id="'choice_name_' + index + '_' + choiceIndex"
+                type='text'
+                v-model="choice.name"
+              )
+
+            .col-md-4.col-xl-5.my-1
+              label(:for="'choice_value_' + index + '_' + choiceIndex")
+                | Value
+              sup.text-danger *
+              input.form-control(
+                :id="'choice_value_' + index + '_' + choiceIndex"
+                type='text'
+                v-model="choice.value"
+              )
+
+            .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end.mb-0.my-1
+              button.btn.btn-danger.btn-block(@click="removeChoice(choiceIndex, property.input.propertyChoices)" type="button")
+                i.fa.fa-trash.fa-fw
+                span.d-xl-none Delete
+        .col-md-12: hr
+    .card-footer: button.btn.btn-primary(type='submit') Submit
+
+block body_js_after
+  script(src="/js/admin/category_create.js")
