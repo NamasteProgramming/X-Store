@@ -12,10 +12,13 @@ const authMiddleware = require('./middlewares/authMiddleware')
 const flasherMiddleware = require('./middlewares/flasherMiddleware')
 const authRoutes = require('./routes/authRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
+const categoryApiRoutes = require('./routes/api/categoryRoutes')
 const app = express()
 const config = require('./utils/config')
+const { trimObject } = require('./utils/global')
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.set('view engine', 'pug')
 // app.set('trust proxy', 1)
 app.use(session({
@@ -29,6 +32,10 @@ app.use(express.static('public'))
 app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use((req, res, next) => {
+  trimObject(req.body)
+  return next()
+})
 
 /**
  * Global middleware to make logged in user available to the views
@@ -46,8 +53,10 @@ app.locals.message = {} // Used in displaying alert
 app.locals.formData = {} // For prefilling data on form validation
 app.locals.errors = {} // Form validation errors
 
+
 app.use('/', authRoutes)
 app.use('/', categoryRoutes)
+app.use('/api/v1/category', categoryApiRoutes)
 
 app.get('/', flasherMiddleware, (req, res) => {
   return res.render('pages/homepage')

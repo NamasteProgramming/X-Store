@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve:local": "nodemon index.js",
+    "serve:debug": "nodemon --inspect index.js",
     "test": "mocha tests/*.js --exit",
     "test:chrome": "node test_browser/index.js",
     "lint": "eslint ./*.js",
@@ -23,7 +24,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "mongoose": "^5.9.20",
+    "mongoose": "^5.9.25",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",

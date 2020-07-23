@@ -1,27 +1,27 @@
-var app = new Vue({
+const app = new Vue({
   el: '#app',
 
   data: {
     categories: [],
     inputTypeOptions: [{
       label: 'Fractional Number',
-      value: 'fractionalNumber',
+      value: 'fractionalNumber'
     },
     {
       label: 'Complete Number',
-      value: 'completeNumber',
+      value: 'completeNumber'
     },
     {
       label: 'Text (One Line)',
-      value: 'textOneline',
+      value: 'textOneline'
     },
     {
       label: 'Text (Multiline Line)',
-      value: 'textMultiline',
+      value: 'textMultiline'
     },
     {
       label: 'Select (One)',
-      value: 'selectOne',
+      value: 'selectOne'
     },
     {
       label: 'Select (Multiple)',
@@ -41,8 +41,8 @@ var app = new Vue({
       label: 'Greater Then',
       value: 'gt'
     }, {
-        label: 'Greater Then or Equals',
-        value: 'gte'
+      label: 'Greater Then or Equals',
+      value: 'gte'
     }],
 
     // Category object which will be sent to the backend
@@ -76,7 +76,11 @@ var app = new Vue({
           label: 'PB',
           printLabel: 'PB'
         }],
-        filterChoices: [],
+        filterChoices: [{
+          label: '1 GB',
+          value: '1 GB',
+          type: 'eq'
+        }],
         input: {
           type: 'fractionalNumber',
           propertyChoices: []
@@ -84,7 +88,7 @@ var app = new Vue({
       }, {
         name: 'RAM',
         required: true,
-        filterable: true,
+        filterable: false,
         input: {
           type: 'fractionalNumber',
           propertyChoices: []
@@ -113,13 +117,18 @@ var app = new Vue({
   },
 
   methods: {
-    saveCategory: function() {
-      console.log(this.category);
+    saveCategory: function () {
+      console.log(JSON.stringify(this.category))
+      axios.post('/api/v1/category', this.category)
+        .then(result => {
+          console.log(result)
+          console.log(result.data)
+        })
     },
 
     // Property methods
-    addNewProperty: function() {
-      this.category.properties.push({
+    addNewProperty: function () {
+      const categoryObject = {
         name: '',
         required: true,
         filterChoices: [],
@@ -128,64 +137,56 @@ var app = new Vue({
           type: 'fractionalNumber',
           propertyChoices: []
         }
-      });
+      }
+      this.category.properties.push(categoryObject)
     },
 
-    removeProperty: function(index) {
-      this.category.properties.splice(index, 1);
+    removeProperty: function (index) {
+      this.category.properties.splice(index, 1)
     },
 
     // Input Choices methods
-    addNewChoice: function(property) {
+    addNewChoice: function (property) {
       const choiceObject = {
         name: '',
         value: ''
-      };
-
-      if (Array.isArray(property.input.propertyChoices)) {
-        return property.input.propertyChoices.push(choiceObject);
       }
-      property.input.propertyChoices = [choiceObject];
+
+      property.input.propertyChoices.push(choiceObject)
     },
 
-    removeChoice: function(index, property) {
-      property.input.propertyChoices.splice(index, 1);
+    removeChoice: function (index, property) {
+      property.input.propertyChoices.splice(index, 1)
     },
 
     // Units
-    addUnit(property) {
+    addUnit: function (property) {
       const unitObject = {
-          label: '',
-          printLabel: '',
-          threshold: 10,
-          nextLabel: ''
-      };
-
-      if (Array.isArray(property.units)) {
-        return property.units.push(unitObject);
+        label: '',
+        printLabel: '',
+        threshold: 10,
+        nextLabel: ''
       }
-      property.units = [unitObject];
+
+      property.units.push(unitObject)
     },
 
-    removeUnit: function(index, units) {
-      units.splice(index, 1);
+    removeUnit: function (index, units) {
+      units.splice(index, 1)
     },
 
     // Filters
-    addFilter(property) {
+    addFilter: function (property) {
       const filterObject = {
         label: '',
         printLabel: '',
         type: ''
-      };
-      if (Array.isArray(property.filterChoices)) {
-        return property.filterChoices.push(filterObject);
       }
-      property.filterChoices = [filterObject];
+      property.filterChoices.push(filterObject)
     },
 
-    removeFilter: function(index, property) {
-      property.filterChoices.splice(index, 1);
-    },
+    removeFilter: function (index, property) {
+      property.filterChoices.splice(index, 1)
+    }
   }
-});
+})

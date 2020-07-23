@@ -6,7 +6,7 @@ const choicesSchema = {
     required: true
   },
   value: {
-    type: mongoose.Schema.Types.Mixed,
+    type: String,
     required: true
   }
 }
@@ -20,7 +20,7 @@ const categorySchema = mongoose.Schema({
   categoryId: {
     type: mongoose.Types.ObjectId,
     ref: 'Category',
-    index:  true,
+    index: true,
     sparse: true // Required with optional unique index
   },
 
@@ -79,7 +79,8 @@ const categorySchema = mongoose.Schema({
      * Is it required on product
      */
     required: {
-      type: Boolean
+      type: Boolean,
+      required: true
     },
 
     /**
@@ -99,10 +100,45 @@ const categorySchema = mongoose.Schema({
     },
 
     /**
+     * Indicates whether property have any units
+     */
+    hasUnits: Boolean,
+
+    /**
+     * Unites
+     */
+    units: [{
+      label: {
+        type: String,
+        required: true
+      },
+      printLabel: {
+        type: String,
+        required: true,
+      },
+      threshold: Number,
+      nextLabel: String
+    }],
+
+    /**
      * Optional
      * Possible choices for filter like 1GB, 2GB
      */
-    filterChoices: [choicesSchema],
+    filterChoices: [{
+      label: {
+        type: String,
+        required: true
+      },
+      value: {
+        type: String,
+        required: true
+      },
+      type: {
+        type: String,
+        enum: ['lt', 'lte', 'eq', 'gte', 'gt'],
+        required: true
+      }
+    }],
 
     /**
      * Input Type
