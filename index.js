@@ -15,7 +15,7 @@ const categoryRoutes = require('./routes/categoryRoutes')
 const categoryApiRoutes = require('./routes/api/categoryRoutes')
 const app = express()
 const config = require('./utils/config')
-const { trimObject } = require('./utils/global')
+const { trimObject, santizeObject } = require('./utils/global')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -34,6 +34,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use((req, res, next) => {
   trimObject(req.body)
+  santizeObject(req.body)
   return next()
 })
 
@@ -52,7 +53,6 @@ app.locals.title = 'X Store'
 app.locals.message = {} // Used in displaying alert
 app.locals.formData = {} // For prefilling data on form validation
 app.locals.errors = {} // Form validation errors
-
 
 app.use('/', authRoutes)
 app.use('/', categoryRoutes)

@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 const config = require('./config')
+
+mongoose.set('debug', process.env.NODE_ENV !== 'production')
+
 mongoose.connect(config.mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
