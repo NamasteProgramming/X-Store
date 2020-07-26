@@ -24,7 +24,11 @@ block content
             v-model="category.categoryId"
           )
             option(disabled selected value="") This is parent a top level category
-            option(v-for="categoryItem in categories" :key="categoryItem._id") {{ category.name }}
+            option(
+              v-for="categoryItem in categories"
+              :value="categoryItem._id"
+              :key="categoryItem._id"
+            ) {{ categoryItem.name }}
 
         .col-md-6: .form-group
           label(for='name')
@@ -36,6 +40,7 @@ block content
             minlength='2'
             placeholder='Enter Category Name'
             v-model="category.name"
+            required
           )
 
       .row.mb-4: .col-md-12: .custom-control.custom-checkbox
@@ -53,6 +58,7 @@ block content
         textarea.form-control#description(
           placeholder='Enter Category Description'
           v-model="category.description"
+          required
         )
 
       .row: .col-md-12: .form-group
@@ -86,6 +92,7 @@ block content
               :id="'property_name_' + index"
               type='text'
               v-model="property.name"
+              required
             )
 
           .col-md-4.col-xl-5: .form-group
@@ -95,6 +102,7 @@ block content
             select.form-control.custom-select(
               :id="'property_type_' + index"
               v-model="property.input.type"
+              required
             )
               option(
                 v-for="(typeOption, i) in inputTypeOptions"
@@ -148,6 +156,7 @@ block content
                   :id="'choice_name_' + index + '_' + choiceIndex"
                   type='text'
                   v-model="choice.label"
+                  required
                 )
 
               .col-md-4.col-xl-5.my-1
@@ -158,6 +167,7 @@ block content
                   :id="'choice_value_' + index + '_' + choiceIndex"
                   type='text'
                   v-model="choice.value"
+                  required
                 )
 
               .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end.mb-0.my-1
@@ -187,6 +197,7 @@ block content
                   :id="'unit_name_' + index + '_' + unitIndex"
                   type='text'
                   v-model="unit.label"
+                  required
                 )
 
               .col-md-3.my-1
@@ -197,6 +208,7 @@ block content
                   :id="'unit_print_label_' + index + '_' + unitIndex"
                   type='text'
                   v-model="unit.printLabel"
+                  required
                 )
 
               .col-md-3.my-1
@@ -246,6 +258,7 @@ block content
                   :id="'filter_name_' + index + '_' + filterIndex"
                   type='text'
                   v-model="filter.label"
+                  required
                 )
 
               .col-md-3.my-1
@@ -255,6 +268,7 @@ block content
                   :id="'filter_value_' + index + '_' + filterIndex"
                   type='text'
                   v-model="filter.value"
+                  required
                 )
 
               .col-md-3.my-1
@@ -263,6 +277,7 @@ block content
                 select.form-control.custom-select(
                   :id="'filter_type_' + index + '_' + filterIndex"
                   v-model="filter.type"
+                  required
                 )
                   option(
                     v-for="(filterType, index) in filterTypes"
@@ -280,3 +295,7 @@ block content
 
 block body_js_after
   script(src="/js/admin/category_create.js")
+
+block body_js_before_inline
+  script
+    | var categories = !{JSON.stringify(categories)}

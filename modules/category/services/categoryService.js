@@ -11,6 +11,15 @@ const addCategory = async (categoryInput) => {
   return category
 }
 
+const getNonLeafCategories = async () => {
+  const categories = await Category.find({
+    isLeaf: false,
+    isActive: true
+  }).lean()
+  return categories
+}
+
 module.exports = {
-  addCategory
+  addCategory,
+  getNonLeafCategories
 }

@@ -1,16 +1,5 @@
 const mongoose = require('mongoose')
 
-const choicesSchema = {
-  label: {
-    type: String,
-    required: true
-  },
-  value: {
-    type: String,
-    required: true
-  }
-}
-
 const categorySchema = mongoose.Schema({
   /**
    * OPTIONAL: Parent category id
@@ -105,7 +94,12 @@ const categorySchema = mongoose.Schema({
     hasUnits: Boolean,
 
     /**
-     * Unites
+     * Applied unit to this category
+     * In case of storage it can be MB, GB, TB, etc
+     * [{ label: "KB", threshold: 1024, nextLabel: "MB"},
+     * { label: "MB", threshold: 1024, nextLabel: "GB"},
+     * { label: "GB", threshold: 1024, nextLabel: "TB"},
+     * { label: "TB", threshold: 1024, nextLabel: "PB"}]
      */
     units: [{
       label: {
@@ -114,7 +108,7 @@ const categorySchema = mongoose.Schema({
       },
       printLabel: {
         type: String,
-        required: true,
+        required: true
       },
       threshold: Number,
       nextLabel: String
@@ -163,23 +157,17 @@ const categorySchema = mongoose.Schema({
       /**
        * When input type is select, this array is used to generate dropdown
        */
-      propertyChoices: [choicesSchema]
-    },
-
-    /**
-     * Applied unit to this category
-     * In case of storage it can be MB, GB, TB, etc
-     * [{ label: "KB", threshold: 1024, nextLabel: "MB"},
-     * { label: "MB", threshold: 1024, nextLabel: "GB"},
-     * { label: "GB", threshold: 1024, nextLabel: "TB"},
-     * { label: "TB", threshold: 1024, nextLabel: "PB"}]
-     */
-    units: [{
-      label: String, // GB,
-      printLabel: String, // This will be printed on invoice
-      threshold: Number, // 1024
-      nextLabel: String
-    }]
+      propertyChoices: [{
+        label: {
+          type: String,
+          required: true
+        },
+        value: {
+          type: String,
+          required: true
+        }
+      }]
+    }
   }],
 
   /**

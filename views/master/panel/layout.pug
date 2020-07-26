@@ -23,6 +23,7 @@ html(lang="en")
       include ./partials/footer.pug
 
     block body_js_before
+    block body_js_before_inline
     script(src="/panel/plugins/jquery/jquery.min.js")
     script(src="/panel/plugins/bootstrap/js/bootstrap.bundle.min.js")
     script(src="/panel/dist/js/adminlte.min.js")
@@ -30,3 +31,4 @@ html(lang="en")
     script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
     script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
     block body_js_after
+    block body_js_after_inline

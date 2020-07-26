@@ -1,8 +1,8 @@
-const app = new Vue({
+var app = new Vue({
   el: '#app',
 
   data: {
-    categories: [],
+    categories: categories,
     inputTypeOptions: [{
       label: 'Fractional Number',
       value: 'fractionalNumber'
@@ -48,6 +48,15 @@ const app = new Vue({
     // Category object which will be sent to the backend
     category: {
       categoryId: '',
+      name: '',
+      description: '',
+      seoDescription: '',
+      isLeaf: false,
+      properties: []
+    },
+
+    categoryDev: {
+      categoryId: '',
       name: 'Mobile',
       description: 'Category description goes here',
       seoDescription: 'Subcategory description goes here',
@@ -89,6 +98,7 @@ const app = new Vue({
         name: 'RAM',
         required: true,
         filterable: false,
+        hasUnits: false,
         input: {
           type: 'fractionalNumber',
           propertyChoices: []
@@ -99,6 +109,9 @@ const app = new Vue({
         name: 'OS',
         required: true,
         filterable: true,
+        hasUnits: false,
+        units: [],
+        filterChoices: [],
         input: {
           type: 'selectOne',
           propertyChoices: [{
@@ -131,6 +144,8 @@ const app = new Vue({
       const categoryObject = {
         name: '',
         required: true,
+        hasUnits: false,
+        filterable: false,
         filterChoices: [],
         units: [],
         input: {

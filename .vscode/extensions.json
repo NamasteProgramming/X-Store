@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "dbalas.vscode-html2pug",
+    "eamodio.gitlens"
+  ]
+}
