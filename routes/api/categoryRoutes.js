@@ -15,8 +15,13 @@ router.post('/', async (req, res) => {
       errors: processedErrors
     })
   }
-  const category = await addCategory(req.body)
-  return res.json(category)
+  try {
+    const category = await addCategory(req.body)
+    return res.json(category)
+  } catch (e) {
+    // TODO: Temporary
+    return res.status(422).json(e)
+  }
 })
 
 module.exports = router

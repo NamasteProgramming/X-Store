@@ -188,6 +188,22 @@ const categorySchema = mongoose.Schema({
   timestamps: true
 })
 
+categorySchema.pre('save', function (next) {
+  const errors = {}
+  for (let i = 0; i < this.properties.length; i++) {
+    const property = this.properties[i]
+    if (property.filterable && !['selectOne', 'selectMultiple'].includes(property.input.type)) {
+      if (!property.filterChoices.length) {
+        errors[`properties[${i}].filterChoices`] = 'Filter choices must contain at least 1 item'
+      }
+    }
+  }
+  if (Object.keys(errors).length) {
+    return next(errors)
+  }
+  return next()
+})
+
 const Category = mongoose.model('Category', categorySchema)
 
 module.exports = Category
