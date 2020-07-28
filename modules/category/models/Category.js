@@ -10,7 +10,7 @@ const categorySchema = mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Category',
     index: true,
-    sparse: true // Required with optional unique index
+    sparse: true // Required with optional index
   },
 
   /**

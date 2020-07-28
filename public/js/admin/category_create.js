@@ -2,7 +2,7 @@ var app = new Vue({
   el: '#app',
 
   data: {
-    categories: categories,
+    rawCategories: categories,
     inputTypeOptions: [{
       label: 'Fractional Number',
       value: 'fractionalNumber'
@@ -202,6 +202,26 @@ var app = new Vue({
 
     removeFilter: function (index, property) {
       property.filterChoices.splice(index, 1)
+    }
+  },
+
+  computed: {
+    categories: function () {
+      const prefixParentName = (category) => {
+        if (!category.processed && category.categoryId) {
+          const parentCategory = this.rawCategories.find(c => c._id === category.categoryId)
+          if (parentCategory.categoryId && !parentCategory.processed) {
+            prefixParentName(parentCategory)
+          }
+          category.name = parentCategory.name + ' > ' + category.name
+          category.processed = true
+        }
+      }
+
+      return this.rawCategories.map(category => {
+        prefixParentName(category)
+        return category
+      })
     }
   }
 })
