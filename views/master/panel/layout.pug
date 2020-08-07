@@ -6,8 +6,8 @@ html(lang="en")
     meta(http-equiv="x-ua-compatible" content="ie=edge")
     title #{title}
     block head_css_before
-    link(rel="stylesheet" href="/panel/plugins/fontawesome-free/css/all.min.css")
-    link(rel="stylesheet" href="/panel/dist/css/adminlte.min.css")
+    link(rel="stylesheet" href=assetUrl + "/panel/plugins/fontawesome-free/css/all.min.css")
+    link(rel="stylesheet" href=assetUrl + "/panel/dist/css/adminlte.min.css")
     link(href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet")
     block head_css_after
     block head_js
@@ -24,10 +24,10 @@ html(lang="en")
 
     block body_js_before
     block body_js_before_inline
-    script(src="/panel/plugins/jquery/jquery.min.js")
-    script(src="/panel/plugins/bootstrap/js/bootstrap.bundle.min.js")
-    script(src="/panel/dist/js/adminlte.min.js")
-    script(src="/panel/dist/js/demo.js")
+    script(src=assetUrl + "/panel/plugins/jquery/jquery.min.js")
+    script(src=assetUrl + "/panel/plugins/bootstrap/js/bootstrap.bundle.min.js")
+    script(src=assetUrl + "/panel/dist/js/adminlte.min.js")
+    script(src=assetUrl + "/panel/dist/js/demo.js")
     script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
     script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
     script(src='https://cdn.jsdelivr.net/npm/sweetalert2@9')

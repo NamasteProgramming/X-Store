@@ -2,8 +2,8 @@ const app = new Vue({
   el: '#app',
 
   data: {
-    categories: categories,
-    meta: meta,
+    categories,
+    meta,
 
     // UI Data
     currentPageNo: 1
@@ -15,13 +15,12 @@ const app = new Vue({
         params: { pageNo }
       })
         .then(result => {
-          this.categories = result.data.categories
-          this.meta = result.data.meta
+          this.categories = result.data.data.categories
+          this.meta = result.data.data.meta
         })
     },
 
     destroy (id) {
-      console.log(id)
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -34,7 +33,6 @@ const app = new Vue({
         if (result.value) {
           axios.delete(`/api/v1/category/${id}`)
             .then(result => {
-              console.log('Output:', result.data)
               Swal.fire(
                 'Deleted!',
                 'Your category has been deleted.',

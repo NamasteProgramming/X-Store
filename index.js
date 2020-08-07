@@ -41,6 +41,7 @@ app.use((req, res, next) => {
  * Global middleware to make logged in user available to the views
  */
 app.use((req, res, next) => {
+  res.locals.assetUrl = config.assetUrl
   res.locals.user = req.isAuthenticated() ? req.user : null
   return next()
 })
