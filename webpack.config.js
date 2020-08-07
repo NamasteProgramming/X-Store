@@ -1,7 +1,8 @@
 const path = require('path')
 
 const entries = {
-  'js/admin/category_create.js': './resources/js/admin/category_create.js'
+  'js/admin/category_create.js': './resources/js/admin/category_create.js',
+  'js/admin/category_list.js': './resources/js/admin/category_list.js'
 }
 module.exports = [{
   name: 'watch',

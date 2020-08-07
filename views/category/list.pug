@@ -1,0 +1,50 @@
+extends ../master/panel/layout
+block content
+  .content-header: .container-fluid: .row.mb-2
+    .col-sm-6: h1.m-0.text-dark Category List
+    .col-sm-6: ol.breadcrumb.float-sm-right
+      li.breadcrumb-item: a(href="/dashboard") Home
+      li.breadcrumb-item.active Category
+
+  .content: .container-fluid#app: .card
+    .card-header
+      h3.card-title Categories
+    .card-body
+      table.table.table-bordered
+        thead
+          tr
+            th(style='width: 10px') #
+            th Name
+            th Actions
+        tbody
+          tr(v-for="(category, index) in categories" :key="category._id")
+            td {{ getSerial(index) }}
+            td {{ category.name }}
+            td
+              button.btn.btn-danger(@click="destroy(category._id)") Delete
+              a.btn.btn-secondary.mx-1(href="/category/create") Edit
+
+    .card-footer.d-flex.justify-content-center
+      nav(aria-label='Page navigation example')
+        ul.pagination
+          li.page-item
+            a.page-link(href='#' aria-label='Previous')
+              span(aria-hidden='true') «
+          li.page-item(
+            v-for="index in pagination.totalPages"
+            :key="index"
+            :class="{ active: pagination.currentPage === index }"
+            @click="getCategories(index)"
+          )
+            a.page-link(href='#') {{ index }}
+          li.page-item
+            a.page-link(href='#' aria-label='Next')
+              span(aria-hidden='true') »
+
+block body_js_after
+  script(src="/js/admin/category_list.js")
+
+block body_js_before_inline
+  script
+    | var categories = !{JSON.stringify(categories)};
+    | var meta = !{JSON.stringify(meta)};

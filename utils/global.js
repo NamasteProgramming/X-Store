@@ -95,9 +95,14 @@ const trimAndSantizeObject = (obj) => {
   }
 }
 
+const calculateOffset = ({ pageNo, pageSize }) => {
+  return (pageNo - 1) * pageSize
+}
+
 module.exports = {
   trimObject,
   santizeObject,
   trimAndSantizeObject,
-  isString
+  isString,
+  calculateOffset
 }
