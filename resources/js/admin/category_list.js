@@ -1,3 +1,7 @@
+Vue.use(VueLoading)
+Vue.component('paginate', VuejsPaginate)
+Vue.component('loading', VueLoading)
+
 const app = new Vue({
   el: '#app',
 
@@ -6,18 +10,26 @@ const app = new Vue({
     meta,
 
     // UI Data
-    currentPageNo: 1
+    currentPageNo: 1,
+    isLoading: false
   },
 
   methods: {
     getCategories (pageNo) {
-      axios.get('/api/v1/category', {
-        params: { pageNo }
-      })
-        .then(result => {
-          this.categories = result.data.data.categories
-          this.meta = result.data.data.meta
+      try {
+        this.isLoading = true
+        axios.get('/api/v1/category', {
+          params: { pageNo }
         })
+          .then(result => {
+            this.categories = result.data.data.categories
+            this.meta = result.data.data.meta
+            this.isLoading = false
+          })
+      } catch (e) {
+        console.error(e)
+        this.isLoading = false
+      }
     },
 
     destroy (id) {

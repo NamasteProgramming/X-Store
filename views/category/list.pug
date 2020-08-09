@@ -10,6 +10,13 @@ block content
     .card-header
       h3.card-title Categories
     .card-body
+      loading(
+        color="#007BFF"
+        :height="128"
+        :width="128"
+        :active='isLoading'
+        :is-full-page='true'
+      )
       table.table.table-bordered
         thead
           tr
@@ -25,21 +32,19 @@ block content
               a.btn.btn-secondary.mx-1(href="/category/create") Edit
 
     .card-footer.d-flex.justify-content-center
-      nav(aria-label='Page navigation example')
-        ul.pagination
-          li.page-item
-            a.page-link(href='#' aria-label='Previous')
-              span(aria-hidden='true') «
-          li.page-item(
-            v-for="index in pagination.totalPages"
-            :key="index"
-            :class="{ active: pagination.currentPage === index }"
-            @click="getCategories(index)"
-          )
-            a.page-link(href='#') {{ index }}
-          li.page-item
-            a.page-link(href='#' aria-label='Next')
-              span(aria-hidden='true') »
+      paginate(
+        :page-count='20'
+        :click-handler='getCategories'
+        prev-text='«'
+        next-text='»'
+        container-class="pagination"
+        page-class="page-item"
+        prev-class="page-item"
+        next-class="page-item"
+        page-link-class="page-link"
+        prev-link-class="page-link"
+        next-link-class="page-link"
+      )
 
 block body_js_after
   script(src=assetUrl + "/js/admin/category_list.js")

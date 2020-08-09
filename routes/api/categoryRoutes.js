@@ -24,6 +24,7 @@ router.post('/', async (req, res) => {
     const category = await addCategory(req.body)
     return successWrapper({
       res,
+      status: 201,
       message: 'Category created successfully',
       data: { category }
     })

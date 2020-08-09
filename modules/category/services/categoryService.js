@@ -25,12 +25,14 @@ const getCategories = async ({ filters, pageNo = 1, pageSize = 10 }) => {
 
   const conditions = {}
 
-  const categories = await Category.find(conditions)
-    .skip(calculateOffset({ pageNo, pageSize }))
-    .limit(pageSize)
-    .lean()
+  const [categories, total] = await Promise.all([
+    Category.find(conditions)
+      .skip(calculateOffset({ pageNo, pageSize }))
+      .limit(pageSize)
+      .lean(),
+    Category.countDocuments(conditions)
+  ])
 
-  const total = await Category.countDocuments(conditions)
   const meta = {
     total,
     pageNo,
@@ -52,10 +54,10 @@ const destoryCategory = async ({
       _id: categoryId
     })
   }
-  if (categoryIds) {
-    result = await Category.deleteOne({
-      $in: {
-        _id: categoryIds
+  if (categoryIds && Array.isArray(categoryIds)) {
+    result = await Category.deleteMany({
+      _id: {
+        $in: categoryIds
       }
     })
   }
