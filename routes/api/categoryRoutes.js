@@ -41,8 +41,8 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-  const { pageNo = 1, pageSize = 10 } = req.query
-  const { categories, meta } = await getCategories({ pageNo, pageSize })
+  const { pageNo = 1, pageSize = 10, keyword = '' } = req.query
+  const { categories, meta } = await getCategories({ pageNo, pageSize, keyword })
   return successWrapper({
     res,
     status: 206,

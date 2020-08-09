@@ -1,3 +1,4 @@
+const debounce = require('lodash.debounce')
 Vue.use(VueLoading)
 Vue.component('paginate', VuejsPaginate)
 Vue.component('loading', VueLoading)
@@ -11,15 +12,24 @@ const app = new Vue({
 
     // UI Data
     currentPageNo: 1,
-    isLoading: false
+    pageSize: 10,
+    isLoading: false,
+    keyword: ''
   },
 
   methods: {
-    getCategories (pageNo) {
+    getCategories: function (pageNo) {
       try {
         this.isLoading = true
+        pageNo = pageNo || this.currentPageNo
+        const params = { pageNo, pageSize: this.pageSize }
+
+        if (this.keyword) {
+          params.keyword = this.keyword
+        }
+
         axios.get('/api/v1/category', {
-          params: { pageNo }
+          params
         })
           .then(result => {
             this.categories = result.data.data.categories
@@ -32,7 +42,7 @@ const app = new Vue({
       }
     },
 
-    destroy (id) {
+    destroy: function (id) {
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -58,7 +68,11 @@ const app = new Vue({
 
     getSerial (number) {
       return ((this.meta.pageNo - 1) * this.meta.pageSize) + number + 1
-    }
+    },
+
+    _getCategories: debounce(function () {
+      this.getCategories(this.currentPageNo)
+    }, 1000)
   },
 
   computed: {
@@ -67,6 +81,16 @@ const app = new Vue({
         totalPages: Math.ceil(this.meta.total / this.meta.pageSize),
         currentPage: this.meta.pageNo
       }
+    }
+  },
+
+  watch: {
+    pageSize: function () {
+      this._getCategories()
+    },
+
+    keyword: function () {
+      this._getCategories()
     }
   }
 })

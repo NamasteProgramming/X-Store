@@ -19,11 +19,16 @@ const getNonLeafCategories = async () => {
   return categories
 }
 
-const getCategories = async ({ filters, pageNo = 1, pageSize = 10 }) => {
+const getCategories = async ({ filters, pageNo = 1, pageSize = 10, keyword }) => {
   pageNo = parseInt(pageNo)
   pageSize = parseInt(pageSize)
 
   const conditions = {}
+  if (keyword) {
+    conditions.name = {
+      $regex: keyword
+    }
+  }
 
   const [categories, total] = await Promise.all([
     Category.find(conditions)

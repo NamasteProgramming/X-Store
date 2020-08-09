@@ -17,6 +17,20 @@ block content
         :active='isLoading'
         :is-full-page='true'
       )
+      .row
+        .col-sm-6.col-md-6: .form-group
+          label(for='page_size') Page Size
+          select#page_size.custom-select(v-model="pageSize")
+            option 10
+            option 25
+            option 50
+            option 100
+            option 500
+
+        .col-sm-6.col-md-6: .form-group
+          label(for='keyword') Search
+          input#search.form-control(v-model="keyword" type='text' placeholder='Search...')
+
       table.table.table-bordered
         thead
           tr
@@ -33,7 +47,7 @@ block content
 
     .card-footer.d-flex.justify-content-center
       paginate(
-        :page-count='20'
+        :page-count='pagination.totalPages'
         :click-handler='getCategories'
         prev-text='«'
         next-text='»'
