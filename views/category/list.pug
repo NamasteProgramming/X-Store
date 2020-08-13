@@ -31,15 +31,43 @@ block content
           label(for='keyword') Search
           input#search.form-control(v-model="keyword" type='text' placeholder='Search...')
 
-      table.table.table-bordered
+      .card(v-for="(category, index) in categories" :key="category._id").d-md-none
+        .card-header: h3.card-title {{ category.name }}
+        .card-body
+          dl.row
+            dt.col-sm-4 Category Name
+            dd.col-sm-8 {{ category.name }}
+            dt.col-sm-4 Category Name
+            dd.col-sm-8 {{ category.name }}
+            dt.col-sm-4 Category Name
+            dd.col-sm-8 {{ category.name }}
+            dt.col-sm-4 Category Name
+            dd.col-sm-8 {{ category.name }}
+        .card-footer
+          button.btn.btn-danger(@click="destroy(category._id)") Delete
+          a.btn.btn-secondary.mx-1(href="/category/create") Edit
+
+      table.table.table-bordered.d-none.d-md-table
         thead
           tr
             th(style='width: 10px') #
+            th Name
+            th Name
+            th Name
+            th Name
+            th Name
+            th Name
             th Name
             th Actions
         tbody
           tr(v-for="(category, index) in categories" :key="category._id")
             td {{ getSerial(index) }}
+            td {{ category.name }}
+            td {{ category.name }}
+            td {{ category.name }}
+            td {{ category.name }}
+            td {{ category.name }}
+            td {{ category.name }}
             td {{ category.name }}
             td
               button.btn.btn-danger(@click="destroy(category._id)") Delete
