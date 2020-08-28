@@ -1,28 +1,33 @@
 {
-  "_from": "@fullcalendar/core@^4.4.0",
-  "_id": "@fullcalendar/core@4.4.0",
+  "_args": [
+    [
+      "@fullcalendar/core@4.3.1",
+      "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE"
+    ]
+  ],
+  "_from": "@fullcalendar/core@4.3.1",
+  "_id": "@fullcalendar/core@4.3.1",
   "_inBundle": false,
-  "_integrity": "sha512-PC4mmXHJHAlXmUEmZVnePyA8yYCOBdxBNq8yjJqedEtT1X0x36yTFz/Y0Ux6bniICZDqYtk0xoxe6jaxi++e0g==",
+  "_integrity": "sha512-Eh+p/wpMkWGu26f8NpfQK9ecQMoZxX/aopv+0+4/CH+Ip0paP6iEc40JYgTz7RFl0bFqV1dvwyGyUZ4+9ZeySA==",
   "_location": "/@fullcalendar/core",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "@fullcalendar/core@^4.4.0",
+    "raw": "@fullcalendar/core@4.3.1",
     "name": "@fullcalendar/core",
     "escapedName": "@fullcalendar%2fcore",
     "scope": "@fullcalendar",
-    "rawSpec": "^4.4.0",
+    "rawSpec": "4.3.1",
     "saveSpec": null,
-    "fetchSpec": "^4.4.0"
+    "fetchSpec": "4.3.1"
   },
   "_requiredBy": [
-    "/admin-lte"
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-4.4.0.tgz",
-  "_shasum": "79dbc0cca836ce628a07e739a456da11ff141373",
-  "_spec": "@fullcalendar/core@^4.4.0",
-  "_where": "/home/namasteprogramming/Projects/lte/node_modules/admin-lte",
+  "_resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-4.3.1.tgz",
+  "_spec": "4.3.1",
+  "_where": "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE",
   "author": {
     "name": "Adam Shaw",
     "email": "arshaw@arshaw.com",
@@ -31,9 +36,7 @@
   "bugs": {
     "url": "https://fullcalendar.io/reporting-bugs"
   },
-  "bundleDependencies": false,
   "copyright": "2019 Adam Shaw",
-  "deprecated": false,
   "description": "Provides core functionality, including the Calendar class",
   "docs": "https://fullcalendar.io/docs/initialize-es6",
   "homepage": "https://fullcalendar.io/",
@@ -54,5 +57,5 @@
   "title": "FullCalendar Core Package",
   "types": "main.d.ts",
   "unpkg": "main.min.js",
-  "version": "4.4.0"
+  "version": "4.3.1"
 }

@@ -9,6 +9,7 @@
 }
 .swal2-popup.swal2-toast .swal2-header {
   flex-direction: row;
+  padding: 0;
 }
 .swal2-popup.swal2-toast .swal2-title {
   flex-grow: 1;
@@ -29,6 +30,7 @@
 }
 .swal2-popup.swal2-toast .swal2-content {
   justify-content: flex-start;
+  padding: 0;
   font-size: 1em;
 }
 .swal2-popup.swal2-toast .swal2-icon {
@@ -266,6 +268,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 1.8em;
 }
 
 .swal2-title {
@@ -434,7 +437,7 @@
   z-index: 1;
   justify-content: center;
   margin: 0;
-  padding: 0;
+  padding: 0 1.6em;
   color: #545454;
   font-size: 1.125em;
   font-weight: normal;
@@ -477,9 +480,6 @@
   border: 1px solid #b4dbed;
   outline: none;
   box-shadow: 0 0 3px #c4e6f5;
-}
-.swal2-input::-webkit-input-placeholder, .swal2-file::-webkit-input-placeholder, .swal2-textarea::-webkit-input-placeholder {
-  color: #cccccc;
 }
 .swal2-input::-moz-placeholder, .swal2-file::-moz-placeholder, .swal2-textarea::-moz-placeholder {
   color: #cccccc;

@@ -1,29 +1,34 @@
 {
-  "_from": "@fullcalendar/daygrid@^4.4.0",
-  "_id": "@fullcalendar/daygrid@4.4.0",
+  "_args": [
+    [
+      "@fullcalendar/daygrid@4.3.0",
+      "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE"
+    ]
+  ],
+  "_from": "@fullcalendar/daygrid@4.3.0",
+  "_id": "@fullcalendar/daygrid@4.3.0",
   "_inBundle": false,
-  "_integrity": "sha512-pDfvL0XZxKHTZ4VFOmwaYe3LmuABEIZsEopeqQ8y5O6BDen9KCbJqgHeCI8FpASSBd6bNlUx7il7EHdSoHhgIw==",
+  "_integrity": "sha512-OrGaRIGbELESOXOCXtoQVY4cOxnxmN7OrjDGbMoVITdoXWuIZ6sFNO84WcBQoRaIbkmqVM0SAU2MENwy+eEwqQ==",
   "_location": "/@fullcalendar/daygrid",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "@fullcalendar/daygrid@^4.4.0",
+    "raw": "@fullcalendar/daygrid@4.3.0",
     "name": "@fullcalendar/daygrid",
     "escapedName": "@fullcalendar%2fdaygrid",
     "scope": "@fullcalendar",
-    "rawSpec": "^4.4.0",
+    "rawSpec": "4.3.0",
     "saveSpec": null,
-    "fetchSpec": "^4.4.0"
+    "fetchSpec": "4.3.0"
   },
   "_requiredBy": [
-    "/@fullcalendar/timegrid",
-    "/admin-lte"
+    "/",
+    "/@fullcalendar/timegrid"
   ],
-  "_resolved": "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-4.4.0.tgz",
-  "_shasum": "25fcae7226b62688b4e086a611582e72253b5229",
-  "_spec": "@fullcalendar/daygrid@^4.4.0",
-  "_where": "/home/namasteprogramming/Projects/lte/node_modules/admin-lte",
+  "_resolved": "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-4.3.0.tgz",
+  "_spec": "4.3.0",
+  "_where": "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE",
   "author": {
     "name": "Adam Shaw",
     "email": "arshaw@arshaw.com",
@@ -32,9 +37,7 @@
   "bugs": {
     "url": "https://fullcalendar.io/reporting-bugs"
   },
-  "bundleDependencies": false,
   "copyright": "2019 Adam Shaw",
-  "deprecated": false,
   "description": "Display events on Month view or DayGrid view",
   "docs": "https://fullcalendar.io/docs/month-view",
   "homepage": "https://fullcalendar.io/",
@@ -48,7 +51,7 @@
   "module": "main.esm.js",
   "name": "@fullcalendar/daygrid",
   "peerDependencies": {
-    "@fullcalendar/core": "~4.4.0"
+    "@fullcalendar/core": "~4.3.0"
   },
   "repository": {
     "type": "git",
@@ -58,5 +61,5 @@
   "title": "FullCalendar Day Grid Plugin",
   "types": "main.d.ts",
   "unpkg": "main.min.js",
-  "version": "4.4.0"
+  "version": "4.3.0"
 }

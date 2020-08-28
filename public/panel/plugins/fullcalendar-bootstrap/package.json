@@ -1,28 +1,33 @@
 {
-  "_from": "@fullcalendar/bootstrap@^4.4.0",
-  "_id": "@fullcalendar/bootstrap@4.4.0",
+  "_args": [
+    [
+      "@fullcalendar/bootstrap@4.3.0",
+      "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE"
+    ]
+  ],
+  "_from": "@fullcalendar/bootstrap@4.3.0",
+  "_id": "@fullcalendar/bootstrap@4.3.0",
   "_inBundle": false,
-  "_integrity": "sha512-2YYM2tPhTwNtYFBcIm4Cf/72pJ3qzRRmzGZx13mJeVYjbSOe1rn/tquff/mMDPPtfCZ4+XqXOLCzAeW7eWHGgw==",
+  "_integrity": "sha512-Ue0Bm2m765jY2LKRsD7ZyoeYNJeeyXxyzSeMdYY4AHFZTevTlcxv1T7ZYPRDBhseewLwiFHP8e0Okfdiji+BCg==",
   "_location": "/@fullcalendar/bootstrap",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "@fullcalendar/bootstrap@^4.4.0",
+    "raw": "@fullcalendar/bootstrap@4.3.0",
     "name": "@fullcalendar/bootstrap",
     "escapedName": "@fullcalendar%2fbootstrap",
     "scope": "@fullcalendar",
-    "rawSpec": "^4.4.0",
+    "rawSpec": "4.3.0",
     "saveSpec": null,
-    "fetchSpec": "^4.4.0"
+    "fetchSpec": "4.3.0"
   },
   "_requiredBy": [
-    "/admin-lte"
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@fullcalendar/bootstrap/-/bootstrap-4.4.0.tgz",
-  "_shasum": "4d77d19b4e2d3aaf518f1ade187d8e4db341d2a1",
-  "_spec": "@fullcalendar/bootstrap@^4.4.0",
-  "_where": "/home/namasteprogramming/Projects/lte/node_modules/admin-lte",
+  "_resolved": "https://registry.npmjs.org/@fullcalendar/bootstrap/-/bootstrap-4.3.0.tgz",
+  "_spec": "4.3.0",
+  "_where": "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE",
   "author": {
     "name": "Adam Shaw",
     "email": "arshaw@arshaw.com",
@@ -31,9 +36,7 @@
   "bugs": {
     "url": "https://fullcalendar.io/reporting-bugs"
   },
-  "bundleDependencies": false,
   "copyright": "2019 Adam Shaw",
-  "deprecated": false,
   "description": "Bootstrap 4 theming for your calendar",
   "docs": "https://fullcalendar.io/docs/bootstrap-theme",
   "homepage": "https://fullcalendar.io/",
@@ -47,7 +50,7 @@
   "module": "main.esm.js",
   "name": "@fullcalendar/bootstrap",
   "peerDependencies": {
-    "@fullcalendar/core": "~4.4.0"
+    "@fullcalendar/core": "~4.3.0"
   },
   "repository": {
     "type": "git",
@@ -57,5 +60,5 @@
   "title": "FullCalendar Bootstrap Plugin",
   "types": "main.d.ts",
   "unpkg": "main.min.js",
-  "version": "4.4.0"
+  "version": "4.3.0"
 }

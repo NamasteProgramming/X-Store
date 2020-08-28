@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v9.10.12
+* sweetalert2 v9.17.0
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -142,11 +142,13 @@
   }
 
   function _createSuper(Derived) {
-    return function () {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
-      if (_isNativeReflectConstruct()) {
+      if (hasNativeReflectConstruct) {
         var NewTarget = _getPrototypeOf(this).constructor;
 
         result = Reflect.construct(Super, arguments, NewTarget);
@@ -214,7 +216,7 @@
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
   /**
-   * Returns the array ob object values (Object.values isn't supported in IE11)
+   * Returns the array of object values (Object.values isn't supported in IE11)
    * @param obj
    */
 
@@ -280,6 +282,12 @@
 
   var callIfFunction = function callIfFunction(arg) {
     return typeof arg === 'function' ? arg() : arg;
+  };
+  var hasToPromiseFn = function hasToPromiseFn(arg) {
+    return arg && typeof arg.toPromise === 'function';
+  };
+  var asPromise = function asPromise(arg) {
+    return hasToPromiseFn(arg) ? arg.toPromise() : Promise.resolve(arg);
   };
   var isPromise = function isPromise(arg) {
     return arg && Promise.resolve(arg) === arg;
@@ -829,9 +837,11 @@
     } // Loading state
 
 
-    var confirmButtonBackgroundColor = window.getComputedStyle(confirmButton).getPropertyValue('background-color');
-    confirmButton.style.borderLeftColor = confirmButtonBackgroundColor;
-    confirmButton.style.borderRightColor = confirmButtonBackgroundColor;
+    if (!isLoading()) {
+      var confirmButtonBackgroundColor = window.getComputedStyle(confirmButton).getPropertyValue('background-color');
+      confirmButton.style.borderLeftColor = confirmButtonBackgroundColor;
+      confirmButton.style.borderRightColor = confirmButtonBackgroundColor;
+    }
   }
 
   function renderButton(button, buttonType, params) {
@@ -1208,7 +1218,7 @@
       return hide(image);
     }
 
-    show(image); // Src, alt
+    show(image, ''); // Src, alt
 
     image.setAttribute('src', params.imageUrl);
     image.setAttribute('alt', params.imageAlt); // Width, height
@@ -1327,7 +1337,7 @@
       }
 
       if (index !== params.progressSteps.length - 1) {
-        var lineEl = createLineElement(step);
+        var lineEl = createLineElement(params);
         progressStepsContainer.appendChild(lineEl);
       }
     });
@@ -1685,7 +1695,7 @@
     onDestroy: undefined,
     scrollbarPadding: true
   };
-  var updatableParams = ['title', 'titleText', 'text', 'html', 'icon', 'hideClass', 'customClass', 'allowOutsideClick', 'allowEscapeKey', 'showConfirmButton', 'showCancelButton', 'confirmButtonText', 'confirmButtonAriaLabel', 'confirmButtonColor', 'cancelButtonText', 'cancelButtonAriaLabel', 'cancelButtonColor', 'buttonsStyling', 'reverseButtons', 'imageUrl', 'imageWidth', 'imageHeight', 'imageAlt', 'progressSteps', 'currentProgressStep'];
+  var updatableParams = ['title', 'titleText', 'text', 'html', 'footer', 'icon', 'hideClass', 'customClass', 'allowOutsideClick', 'allowEscapeKey', 'showConfirmButton', 'showCancelButton', 'confirmButtonText', 'confirmButtonAriaLabel', 'confirmButtonColor', 'cancelButtonText', 'cancelButtonAriaLabel', 'cancelButtonColor', 'buttonsStyling', 'reverseButtons', 'showCloseButton', 'closeButtonHtml', 'closeButtonAriaLabel', 'imageUrl', 'imageWidth', 'imageHeight', 'imageAlt', 'progressSteps', 'currentProgressStep', 'onClose', 'onAfterClose', 'onDestroy'];
   var deprecatedParams = {
     animation: 'showClass" and "hideClass'
   };
@@ -1865,6 +1875,19 @@
       document.body.style.top = "".concat(offset * -1, "px");
       addClass(document.body, swalClasses.iosfix);
       lockBodyScroll();
+      addBottomPaddingForTallPopups(); // #1948
+    }
+  };
+
+  var addBottomPaddingForTallPopups = function addBottomPaddingForTallPopups() {
+    var safari = !navigator.userAgent.match(/(CriOS|FxiOS|EdgiOS|YaBrowser|UCBrowser)/i);
+
+    if (safari) {
+      var bottomPanelHeight = 44;
+
+      if (getPopup().scrollHeight > window.innerHeight - bottomPanelHeight) {
+        getContainer().style.paddingBottom = "".concat(bottomPanelHeight, "px");
+      }
     }
   };
 
@@ -2036,7 +2059,18 @@
     var backdrop = getContainer();
     removeClass(backdrop, innerParams.showClass.backdrop);
     addClass(backdrop, innerParams.hideClass.backdrop);
-    handlePopupAnimation(this, popup, innerParams); // Resolve Swal promise
+    handlePopupAnimation(this, popup, innerParams);
+
+    if (typeof resolveValue !== 'undefined') {
+      resolveValue.isDismissed = typeof resolveValue.dismiss !== 'undefined';
+      resolveValue.isConfirmed = typeof resolveValue.dismiss === 'undefined';
+    } else {
+      resolveValue = {
+        isDismissed: true,
+        isConfirmed: false
+      };
+    } // Resolve Swal promise
+
 
     swalPromiseResolve(resolveValue || {});
   }
@@ -2229,8 +2263,8 @@
       return /^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]{2,24}$/.test(string) ? Promise.resolve() : Promise.resolve(validationMessage || 'Invalid email address');
     },
     url: function url(string, validationMessage) {
-      // taken from https://stackoverflow.com/a/3809435 with a small change from #1306
-      return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/.test(string) ? Promise.resolve() : Promise.resolve(validationMessage || 'Invalid URL');
+      // taken from https://stackoverflow.com/a/3809435 with a small change from #1306 and #2013
+      return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/.test(string) ? Promise.resolve() : Promise.resolve(validationMessage || 'Invalid URL');
     }
   };
 
@@ -2295,12 +2329,15 @@
       params.onBeforeOpen(popup);
     }
 
+    var bodyStyles = window.getComputedStyle(document.body);
+    var initialBodyOverflow = bodyStyles.overflowY;
     addClasses$1(container, popup, params); // scrolling is 'hidden' until animation is done, after that 'auto'
 
     setScrollingVisibility(container, popup);
 
     if (isModal()) {
-      fixScrollContainer(container, params.scrollbarPadding);
+      fixScrollContainer(container, params.scrollbarPadding, initialBodyOverflow);
+      setAriaHidden();
     }
 
     if (!isToast() && !globalState.previousActiveElement) {
@@ -2337,12 +2374,11 @@
     }
   };
 
-  var fixScrollContainer = function fixScrollContainer(container, scrollbarPadding) {
+  var fixScrollContainer = function fixScrollContainer(container, scrollbarPadding, initialBodyOverflow) {
     iOSfix();
     IEfix();
-    setAriaHidden();
 
-    if (scrollbarPadding) {
+    if (scrollbarPadding && initialBodyOverflow !== 'hidden') {
       fixScrollbar();
     } // sweetalert2/issues/1247
 
@@ -2367,7 +2403,7 @@
   var handleInputOptionsAndValue = function handleInputOptionsAndValue(instance, params) {
     if (params.input === 'select' || params.input === 'radio') {
       handleInputOptions(instance, params);
-    } else if (['text', 'email', 'number', 'tel', 'textarea'].indexOf(params.input) !== -1 && isPromise(params.inputValue)) {
+    } else if (['text', 'email', 'number', 'tel', 'textarea'].indexOf(params.input) !== -1 && (hasToPromiseFn(params.inputValue) || isPromise(params.inputValue))) {
       handleInputValue(instance, params);
     }
   };
@@ -2412,9 +2448,9 @@
       return populateInputOptions[params.input](content, formatInputOptions(inputOptions), params);
     };
 
-    if (isPromise(params.inputOptions)) {
+    if (hasToPromiseFn(params.inputOptions) || isPromise(params.inputOptions)) {
       showLoading();
-      params.inputOptions.then(function (inputOptions) {
+      asPromise(params.inputOptions).then(function (inputOptions) {
         instance.hideLoading();
         processInputOptions(inputOptions);
       });
@@ -2428,7 +2464,7 @@
   var handleInputValue = function handleInputValue(instance, params) {
     var input = instance.getInput();
     hide(input);
-    params.inputValue.then(function (inputValue) {
+    asPromise(params.inputValue).then(function (inputValue) {
       input.value = params.input === 'number' ? parseFloat(inputValue) || 0 : "".concat(inputValue);
       show(input);
       input.focus();
@@ -2445,9 +2481,8 @@
   var populateInputOptions = {
     select: function select(content, inputOptions, params) {
       var select = getChildByClass(content, swalClasses.select);
-      inputOptions.forEach(function (inputOption) {
-        var optionValue = inputOption[0];
-        var optionLabel = inputOption[1];
+
+      var renderOption = function renderOption(parent, optionLabel, optionValue) {
         var option = document.createElement('option');
         option.value = optionValue;
         setInnerHtml(option, optionLabel);
@@ -2456,7 +2491,30 @@
           option.selected = true;
         }
 
-        select.appendChild(option);
+        parent.appendChild(option);
+      };
+
+      inputOptions.forEach(function (inputOption) {
+        var optionValue = inputOption[0];
+        var optionLabel = inputOption[1]; // <optgroup> spec:
+        // https://www.w3.org/TR/html401/interact/forms.html#h-17.6
+        // "...all OPTGROUP elements must be specified directly within a SELECT element (i.e., groups may not be nested)..."
+        // check whether this is a <optgroup>
+
+        if (Array.isArray(optionLabel)) {
+          // if it is an array, then it is an <optgroup>
+          var optgroup = document.createElement('optgroup');
+          optgroup.label = optionValue;
+          optgroup.disabled = false; // not configurable for now
+
+          select.appendChild(optgroup);
+          optionLabel.forEach(function (o) {
+            return renderOption(optgroup, o[1], o[0]);
+          });
+        } else {
+          // case of <option>
+          renderOption(select, optionLabel, optionValue);
+        }
       });
       select.focus();
     },
@@ -2499,11 +2557,25 @@
 
     if (typeof Map !== 'undefined' && inputOptions instanceof Map) {
       inputOptions.forEach(function (value, key) {
-        result.push([key, value]);
+        var valueFormatted = value;
+
+        if (_typeof(valueFormatted) === 'object') {
+          // case of <optgroup>
+          valueFormatted = formatInputOptions(valueFormatted);
+        }
+
+        result.push([key, valueFormatted]);
       });
     } else {
       Object.keys(inputOptions).forEach(function (key) {
-        result.push([key, inputOptions[key]]);
+        var valueFormatted = inputOptions[key];
+
+        if (_typeof(valueFormatted) === 'object') {
+          // case of <optgroup>
+          valueFormatted = formatInputOptions(valueFormatted);
+        }
+
+        result.push([key, valueFormatted]);
       });
     }
 
@@ -2530,7 +2602,7 @@
     if (innerParams.inputValidator) {
       instance.disableInput();
       var validationPromise = Promise.resolve().then(function () {
-        return innerParams.inputValidator(inputValue, innerParams.validationMessage);
+        return asPromise(innerParams.inputValidator(inputValue, innerParams.validationMessage));
       });
       validationPromise.then(function (validationMessage) {
         instance.enableButtons();
@@ -2564,7 +2636,7 @@
     if (innerParams.preConfirm) {
       instance.resetValidationMessage();
       var preConfirmPromise = Promise.resolve().then(function () {
-        return innerParams.preConfirm(value, innerParams.validationMessage);
+        return asPromise(innerParams.preConfirm(value, innerParams.validationMessage));
       });
       preConfirmPromise.then(function (preConfirmValue) {
         if (isVisible(getValidationMessage()) || preConfirmValue === false) {
@@ -3024,54 +3096,60 @@
     _destroy: _destroy
   });
 
-  var currentInstance; // SweetAlert constructor
+  var currentInstance;
 
-  function SweetAlert() {
-    // Prevent run in Node env
+  var SweetAlert = /*#__PURE__*/function () {
+    function SweetAlert() {
+      _classCallCheck(this, SweetAlert);
 
-    /* istanbul ignore if */
-    if (typeof window === 'undefined') {
-      return;
-    } // Check for the existence of Promise
-
-    /* istanbul ignore if */
+      // Prevent run in Node env
+      if (typeof window === 'undefined') {
+        return;
+      } // Check for the existence of Promise
 
 
-    if (typeof Promise === 'undefined') {
-      error('This package requires a Promise library, please include a shim to enable it in this browser (See: https://github.com/sweetalert2/sweetalert2/wiki/Migration-from-SweetAlert-to-SweetAlert2#1-ie-support)');
-    }
-
-    currentInstance = this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    var outerParams = Object.freeze(this.constructor.argsToParams(args));
-    Object.defineProperties(this, {
-      params: {
-        value: outerParams,
-        writable: false,
-        enumerable: true,
-        configurable: true
+      if (typeof Promise === 'undefined') {
+        error('This package requires a Promise library, please include a shim to enable it in this browser (See: https://github.com/sweetalert2/sweetalert2/wiki/Migration-from-SweetAlert-to-SweetAlert2#1-ie-support)');
       }
-    });
 
-    var promise = this._main(this.params);
+      currentInstance = this;
 
-    privateProps.promise.set(this, promise);
-  } // `catch` cannot be the name of a module export, so we define our thenable methods here instead
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var outerParams = Object.freeze(this.constructor.argsToParams(args));
+      Object.defineProperties(this, {
+        params: {
+          value: outerParams,
+          writable: false,
+          enumerable: true,
+          configurable: true
+        }
+      });
+
+      var promise = this._main(this.params);
+
+      privateProps.promise.set(this, promise);
+    } // `catch` cannot be the name of a module export, so we define our thenable methods here instead
 
 
-  SweetAlert.prototype.then = function (onFulfilled) {
-    var promise = privateProps.promise.get(this);
-    return promise.then(onFulfilled);
-  };
+    _createClass(SweetAlert, [{
+      key: "then",
+      value: function then(onFulfilled) {
+        var promise = privateProps.promise.get(this);
+        return promise.then(onFulfilled);
+      }
+    }, {
+      key: "finally",
+      value: function _finally(onFinally) {
+        var promise = privateProps.promise.get(this);
+        return promise["finally"](onFinally);
+      }
+    }]);
 
-  SweetAlert.prototype["finally"] = function (onFinally) {
-    var promise = privateProps.promise.get(this);
-    return promise["finally"](onFinally);
-  }; // Assign instance methods from src/instanceMethods/*.js to prototype
+    return SweetAlert;
+  }(); // Assign instance methods from src/instanceMethods/*.js to prototype
 
 
   _extends(SweetAlert.prototype, instanceMethods); // Assign static methods from src/staticMethods/*.js to constructor
@@ -3090,7 +3168,7 @@
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '9.10.12';
+  SweetAlert.version = '9.17.0';
 
   var Swal = SweetAlert;
   Swal["default"] = Swal;

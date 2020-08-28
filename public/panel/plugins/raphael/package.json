@@ -1,35 +1,39 @@
 {
-  "_from": "raphael@^2.3.0",
+  "_args": [
+    [
+      "raphael@2.3.0",
+      "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE"
+    ]
+  ],
+  "_from": "raphael@2.3.0",
   "_id": "raphael@2.3.0",
   "_inBundle": false,
   "_integrity": "sha512-w2yIenZAQnp257XUWGni4bLMVxpUpcIl7qgxEgDIXtmSypYtlNxfXWpOBxs7LBTps5sDwhRnrToJrMUrivqNTQ==",
   "_location": "/raphael",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "raphael@^2.3.0",
+    "raw": "raphael@2.3.0",
     "name": "raphael",
     "escapedName": "raphael",
-    "rawSpec": "^2.3.0",
+    "rawSpec": "2.3.0",
     "saveSpec": null,
-    "fetchSpec": "^2.3.0"
+    "fetchSpec": "2.3.0"
   },
   "_requiredBy": [
-    "/admin-lte",
+    "/",
     "/jquery-mapael"
   ],
   "_resolved": "https://registry.npmjs.org/raphael/-/raphael-2.3.0.tgz",
-  "_shasum": "eabeb09dba861a1d4cee077eaafb8c53f3131f89",
-  "_spec": "raphael@^2.3.0",
-  "_where": "/home/namasteprogramming/Projects/lte/node_modules/admin-lte",
+  "_spec": "2.3.0",
+  "_where": "/media/ravindra/Files/Computer_Science/GitHub/AdminLTE",
   "author": {
     "name": "Dmitry Baranovskiy"
   },
   "bugs": {
     "url": "https://github.com/DmitryBaranovskiy/raphael/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Tomas Alabes",
@@ -39,7 +43,6 @@
   "dependencies": {
     "eve-raphael": "0.5.0"
   },
-  "deprecated": false,
   "description": "JavaScript Vector Library",
   "devDependencies": {
     "qunitjs": "^1.0.0",
