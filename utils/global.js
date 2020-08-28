@@ -95,8 +95,23 @@ const trimAndSantizeObject = (obj) => {
   }
 }
 
+
+/**
+ * Returns offset for paginatin
+ */
 const calculateOffset = ({ pageNo, pageSize }) => {
   return (pageNo - 1) * pageSize
+}
+
+/**
+ * Trims given text to given length
+ */
+const cutter = ({ text, length = 25 }) => {
+  if (text && text.length > length) {
+    const partInLength = text.substring(0, length)
+    return `${partInLength}...`
+  }
+  return text
 }
 
 module.exports = {
@@ -104,5 +119,6 @@ module.exports = {
   santizeObject,
   trimAndSantizeObject,
   isString,
-  calculateOffset
+  calculateOffset,
+  cutter
 }

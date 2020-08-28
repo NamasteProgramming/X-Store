@@ -12,10 +12,11 @@ const authMiddleware = require('./middlewares/authMiddleware')
 const flasherMiddleware = require('./middlewares/flasherMiddleware')
 const authRoutes = require('./routes/authRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
+const productRoutes = require('./routes/productRoutes')
 const categoryApiRoutes = require('./routes/api/categoryRoutes')
 const app = express()
 const config = require('./utils/config')
-const { trimAndSantizeObject } = require('./utils/global')
+const { trimAndSantizeObject, cutter } = require('./utils/global')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -43,6 +44,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.assetUrl = config.assetUrl
   res.locals.user = req.isAuthenticated() ? req.user : null
+  res.locals.cutter = cutter
   return next()
 })
 
@@ -56,6 +58,8 @@ app.locals.errors = {} // Form validation errors
 
 app.use('/', authRoutes)
 app.use('/', categoryRoutes)
+app.use('/', productRoutes)
+app.use('/api/v1/category', categoryApiRoutes)
 app.use('/api/v1/category', categoryApiRoutes)
 
 app.get('/', flasherMiddleware, (req, res) => {

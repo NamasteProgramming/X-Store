@@ -1,16 +1,16 @@
 extends ../master/panel/layout
 block content
   .content-header: .container-fluid: .row.mb-2
-    .col-sm-6: h1.m-0.text-dark Category List
+    .col-sm-6: h1.m-0.text-dark Product List
     .col-sm-6: ol.breadcrumb.float-sm-right
       li.breadcrumb-item: a(href="/dashboard") Home
-      li.breadcrumb-item.active Category
+      li.breadcrumb-item.active Product
 
   .content: .container-fluid#app: .card
     .card-header.d-flex.justify-content-between.align-items-center
       h3.flex-fill.card-title Categories
       .flex-shrink-1.card-tools
-        a.btn.btn-sm.btn-primary.pull-right(title='Create Category', href="/category/create")
+        a.btn.btn-sm.btn-primary.pull-right(title='Create Product', href="/product/create")
           | New
           |
           i.fas.fa-fw.fa-plus-circle
@@ -39,25 +39,25 @@ block content
             label(for='keyword') Search
             input#search.form-control(v-model="keyword" type='text' placeholder='Search...')
 
-        .card(v-for="(category, index) in categories" :key="category._id").d-md-none
-          .card-header: h3.card-title {{ category.name }}
+        .card(v-for="(product, index) in categories" :key="product._id").d-md-none
+          .card-header: h3.card-title {{ product.name }}
           .card-body
             dl.row
               dt.col-sm-4 Name
-              dd.col-sm-8 {{ category.name }}
+              dd.col-sm-8 {{ product.name }}
               dt.col-sm-4 Description
-              dd.col-sm-8 {{ category.description }}
+              dd.col-sm-8 {{ product.description }}
               dt.col-sm-4 Leaf
-              dd.col-sm-8 {{ category.isLeaf ? 'Yes' : 'No' }}
-              template(v-if="category.seoDescription")
+              dd.col-sm-8 {{ product.isLeaf ? 'Yes' : 'No' }}
+              template(v-if="product.seoDescription")
                 dt.col-sm-4 SEO Description
-                dd.col-sm-8 {{ category.seoDescription }}
+                dd.col-sm-8 {{ product.seoDescription }}
           .card-footer
-            button.btn.btn-danger(@click="destroy(category._id)")
+            button.btn.btn-danger(@click="destroy(product._id)")
               i.fa.fa-fw.fa-trash
               | Delete
 
-            a.btn.btn-secondary.mx-1(href="/category/create")
+            a.btn.btn-secondary.mx-1(href="/product/create")
               i.fa.fa-fw.fa-edit
               | Edit
 
@@ -71,17 +71,17 @@ block content
               th Properties
               th Actions
           tbody
-            tr(v-for="(category, index) in categories" :key="category._id")
+            tr(v-for="(product, index) in categories" :key="product._id")
               td {{ getSerial(index) }}
-              td {{ category.name }}
-              td {{ cutter({ text: category.description, length: 40 }) }}
-              td {{ category.isLeaf ? 'Yes' : 'No' }}
-              td {{ category.properties ? category.properties.map(p => p.name) : 0 }}
+              td {{ product.name }}
+              td {{ cutter({ text: product.description, length: 40 }) }}
+              td {{ product.isLeaf ? 'Yes' : 'No' }}
+              td {{ product.properties ? product.properties.map(p => p.name) : 0 }}
               td
-                button.btn.btn-danger(@click="destroy(category._id)")
+                button.btn.btn-danger(@click="destroy(product._id)")
                   i.fa.fa-fw.fa-trash
                   | Delete
-                a.btn.btn-secondary.mx-1(href="/category/create")
+                a.btn.btn-secondary.mx-1(href="/product/create")
                   i.fa.fa-fw.fa-edit
                   | Edit
       div.d-flex.justifiy-content-center.align-items-center.flex-column(v-else)

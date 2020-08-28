@@ -22,6 +22,20 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
               i.far.fa-circle.nav-icon
               p List
 
+        li.nav-item.has-treeview
+          a.nav-link(href="#")
+            i.nav-icon.fas.fa-tachometer-alt
+            p Products
+              i.right.fas.fa-angle-left
+          ul.nav.nav-treeview
+            li.nav-item: a.nav-link(href="/product/create")
+              i.far.fa-circle.nav-icon
+              p Create
+
+            li.nav-item: a.nav-link(href="/product")
+              i.far.fa-circle.nav-icon
+              p List
+
         li.nav-item: a.nav-link(href="#")
             i.nav-icon.fas.fa-th
             p

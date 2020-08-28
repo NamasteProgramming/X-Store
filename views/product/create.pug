@@ -1,0 +1,303 @@
+extends ../master/panel/layout
+block content
+  .content-header: .container-fluid: .row.mb-2
+    .col-sm-6: h1.m-0.text-dark Create Product
+    .col-sm-6: ol.breadcrumb.float-sm-right
+      li.breadcrumb-item: a(href="/dashboard") Home
+      li.breadcrumb-item.active Product
+
+  .content: .container-fluid: .card#app: form(
+    role='form'
+    method="POST"
+    v-on:submit.prevent="saveCategory"
+  )
+    .card-header.d-flex.justify-content-between.align-items-center
+      h3.flex-fill.card-title Create Product
+
+    .card-body
+      .row
+        .col-md-6: .form-group
+          label(for='parent_category')
+            | Parent Category
+            sup.text-danger *
+          select.form-control.custom-select#parent_category(
+            v-model="category.categoryId"
+          )
+            option(disabled selected value="") This is parent a top level category
+            option(
+              v-for="categoryItem in categories"
+              :value="categoryItem._id"
+              :key="categoryItem._id"
+            ) {{ categoryItem.name }}
+
+        .col-md-6: .form-group
+          label(for='name')
+            | Name
+            sup.text-danger *
+          input.form-control#name(
+            type='text'
+            maxlength='32'
+            minlength='2'
+            placeholder='Enter Category Name'
+            v-model="category.name"
+            required
+          )
+
+      .row.mb-4: .col-md-12: .custom-control.custom-checkbox
+        input.custom-control-input(
+          type='checkbox'
+          v-model="category.isLeaf"
+          id="is_leaf"
+        )
+        label.custom-control-label(for="is_leaf") Is Leaf Category
+
+      .row: .col-md-12: .form-group
+        label(for='description')
+          | Description
+          sup.text-danger *
+        textarea.form-control#description(
+          placeholder='Enter Category Description'
+          v-model="category.description"
+          required
+        )
+
+      .row: .col-md-12: .form-group
+        label(for='seoDescription')
+          | SEO Description (120-150 characters)
+          sup.text-danger *
+        textarea.form-control#seoDescription(
+          placeholder='Enter SEO Description (120-150 characters)'
+          data-toggle="tooltip"
+          data-html="true"
+          title="<em>Tooltip</em> <u>with</u> <b>HTML</b>"
+          v-model="category.seoDescription"
+        )
+
+      template(v-if="category.isLeaf")
+        hr
+        .row
+          .col-6: h2 Properties
+          .col-6
+            button.btn.btn-primary.float-right(
+              @click="addNewProperty"
+              type="button"
+            ) Add Property
+
+        .row.mb-4(v-for="(property, index) in category.properties" :key="index")
+          .col-md-6: .form-group
+            label(:for="'property_name_' + index")
+              | Name
+              sup.text-danger *
+            input.form-control(
+              :id="'property_name_' + index"
+              type='text'
+              v-model="property.name"
+              required
+            )
+
+          .col-md-4.col-xl-5: .form-group
+            label(:for="'property_type_' + index")
+              | Type
+              sup.text-danger *
+            select.form-control.custom-select(
+              :id="'property_type_' + index"
+              v-model="property.input.type"
+              required
+            )
+              option(
+                v-for="(typeOption, i) in inputTypeOptions"
+                :value="typeOption.value"
+                :key="i"
+              ) {{ typeOption.label }}
+
+          .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end
+            button.btn.btn-danger.btn-block(@click="removeProperty(index)" type="button")
+              i.fa.fa-trash.fa-fw
+              span.d-xl-none Delete
+
+          .col-md-12: .custom-control.custom-checkbox
+            input.custom-control-input(
+              type='checkbox'
+              v-model="property.required"
+              :id="'property_required_' + index"
+            )
+            label.custom-control-label(:for="'property_required_' + index") Required
+
+          .col-md-12: .custom-control.custom-checkbox
+            input.custom-control-input(
+              type='checkbox'
+              v-model="property.hasUnits"
+              :id="'property_has_units_' + index"
+            )
+            label.custom-control-label(:for="'property_has_units_' + index") Has Units
+
+          .col-md-12: .custom-control.custom-checkbox
+            input.custom-control-input(
+              type='checkbox'
+              v-model="property.filterable"
+              :id="'property_filterable_' + index"
+            )
+            label.custom-control-label(:for="'property_filterable_' + index") Filterable
+
+          .col-md-12.mt-2(v-if="['selectOne', 'selectMultiple'].includes(property.input.type)"): .card
+            .card-header.py-2: .row
+                .col-6.d-flex.align-items-center: h2.m-0.h5 {{ property.name }} Choices
+                .col-6.d-flex.align-items-center.justify-content-end: button.btn.btn-primary(@click="addNewChoice(property)" type="button") Add Choice
+
+            .card-body: .row(
+              v-for="(choice, choiceIndex) in property.input.propertyChoices"
+              :key="choiceIndex"
+            )
+              .col-md-6.my-1
+                label(:for="'choice_name_' + index + '_' + choiceIndex")
+                  | Name
+                sup.text-danger *
+                input.form-control(
+                  :id="'choice_name_' + index + '_' + choiceIndex"
+                  type='text'
+                  v-model="choice.label"
+                  required
+                )
+
+              .col-md-4.col-xl-5.my-1
+                label(:for="'choice_value_' + index + '_' + choiceIndex")
+                  | Value
+                sup.text-danger *
+                input.form-control(
+                  :id="'choice_value_' + index + '_' + choiceIndex"
+                  type='text'
+                  v-model="choice.value"
+                  required
+                )
+
+              .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end.mb-0.my-1
+                button.btn.btn-danger.btn-block(@click="removeChoice(choiceIndex, property.input.propertyChoices)" type="button")
+                  i.fa.fa-trash.fa-fw
+                  span.d-xl-none Delete
+
+          .col-md-12.mt-2(
+            v-if="!['selectOne', 'selectMultiple'].includes(property.input.type) && property.hasUnits"
+          ): .card
+            .card-header.py-2: .row
+                .col-6.d-flex.align-items-center: h2.m-0.h5 {{ property.name }} Units
+                .col-6.d-flex.align-items-center.justify-content-end: button.btn.btn-primary(
+                  @click="addUnit(property)"
+                  type="button"
+                ) Add Unit
+
+            .card-body: .row(
+              v-for="(unit, unitIndex) in property.units"
+              :key="unitIndex"
+            )
+              .col-md-3.my-1
+                label(:for="'unit_name_' + index + '_' + unitIndex")
+                  | Name
+                sup.text-danger *
+                input.form-control(
+                  :id="'unit_name_' + index + '_' + unitIndex"
+                  type='text'
+                  v-model="unit.label"
+                  required
+                )
+
+              .col-md-3.my-1
+                label(:for="'unit_print_label_' + index + '_' + unitIndex")
+                  | Print Label
+                sup.text-danger *
+                input.form-control(
+                  :id="'unit_print_label_' + index + '_' + unitIndex"
+                  type='text'
+                  v-model="unit.printLabel"
+                  required
+                )
+
+              .col-md-3.my-1
+                label(:for="'unit_threshold_' + index + '_' + unitIndex")
+                  | Threshold
+                sup.text-danger *
+                input.form-control(
+                  :id="'unit_threshold_' + index + '_' + unitIndex"
+                  type='number'
+                  step="any"
+                  v-model="unit.threshold"
+                )
+
+              .col-md-2.my-1
+                label(:for="'unit_next_label_' + index + '_' + unitIndex")
+                  | Next Label
+                sup.text-danger *
+                input.form-control(
+                  :id="'unit_next_label_' + index + '_' + unitIndex"
+                  type='text'
+                  v-model="unit.nextLabel"
+                )
+
+              .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end.mb-0.my-1
+                button.btn.btn-danger.btn-block(@click="removeUnit(unitIndex, property.units)" type="button")
+                  i.fa.fa-trash.fa-fw
+                  span.d-xl-none Delete
+
+          .col-md-12.mt-2(
+            v-if="!['selectOne', 'selectMultiple'].includes(property.input.type) && property.filterable"
+          ): .card
+            .card-header.py-2: .row
+              .col-6.d-flex.align-items-center: h2.m-0.h5 {{ property.name }} Filter Choices
+              .col-6.d-flex.align-items-center.justify-content-end: button.btn.btn-primary(
+                @click="addFilter(property)"
+                type="button"
+              ) Add Filter Choice
+
+            .card-body: .row(
+              v-for="(filter, filterIndex) in property.filterChoices"
+              :key="filterIndex"
+            )
+              .col-md-3.my-1
+                label(:for="'filter_name_' + index + '_' + filterIndex") Name
+                sup.text-danger *
+                input.form-control(
+                  :id="'filter_name_' + index + '_' + filterIndex"
+                  type='text'
+                  v-model="filter.label"
+                  required
+                )
+
+              .col-md-3.my-1
+                label(:for="'filter_value_' + index + '_' + filterIndex") Value
+                sup.text-danger *
+                input.form-control(
+                  :id="'filter_value_' + index + '_' + filterIndex"
+                  type='text'
+                  v-model="filter.value"
+                  required
+                )
+
+              .col-md-3.my-1
+                label(:for="'filter_type_' + index + '_' + filterIndex") Type
+                sup.text-danger *
+                select.form-control.custom-select(
+                  :id="'filter_type_' + index + '_' + filterIndex"
+                  v-model="filter.type"
+                  required
+                )
+                  option(
+                    v-for="(filterType, index) in filterTypes"
+                    :key="index"
+                    :value="filterType.value"
+                  ) {{ filterType.label }}
+
+              .col-md-2.col-xl-1.form-group.d-md-inline-flex.align-items-end.mb-0.my-1
+                button.btn.btn-danger.btn-block(@click="removeFilter(filterIndex, property)" type="button")
+                  i.fa.fa-trash.fa-fw
+                  span.d-xl-none Delete
+
+          .col-md-12: hr
+    .card-footer: button.btn.btn-primary(type='submit') Submit
+
+block body_js_after
+  script(src=assetUrl + "/js/admin/category_create.js")
+
+block body_js_before_inline
+  script
+    | var categories = !{JSON.stringify(categories)};
+    | var inputTypeOptions = !{JSON.stringify(inputTypeOptions)};
+    | var filterTypeOptions = !{JSON.stringify(filterTypeOptions)};

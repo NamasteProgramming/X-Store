@@ -1,7 +1,14 @@
 const debounce = require('lodash.debounce')
+const { cutter } = require('../../../utils/global')
+
 Vue.use(VueLoading)
 Vue.component('paginate', VuejsPaginate)
 Vue.component('loading', VueLoading)
+Vue.mixin({
+  methods: {
+    cutter
+  }
+})
 
 const app = new Vue({
   el: '#app',
