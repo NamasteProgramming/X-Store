@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const session = require('express-session')
-const bodyParser = require('body-parser')
 const logger = require('morgan')
 require('./utils/db.config')
 const MongoStore = require('connect-mongo')(session)
@@ -18,8 +17,8 @@ const app = express()
 const config = require('./utils/config')
 const { trimAndSantizeObject, cutter } = require('./utils/global')
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 app.set('view engine', 'pug')
 // app.set('trust proxy', 1)
 app.use(session({
