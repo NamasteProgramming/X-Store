@@ -11,7 +11,8 @@
     "lint": "eslint ./*.js",
     "lint:fix": "eslint --fix ./*.js",
     "asset:watch": "npx webpack --config-name=watch",
-    "asset:build": "npx webpack --config-name=prod"
+    "asset:build": "npx webpack --config-name=prod",
+    "seed": "node seeds"
   },
   "keywords": [
     "ecommerce"

@@ -1,5 +1,6 @@
 const Category = require('../models/Category')
 const { calculateOffset } = require('../../../utils/global')
+
 /**
  * Create new category
  * @param {Object} categoryInput - Category input, validated by category validation
