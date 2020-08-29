@@ -8,7 +8,7 @@ block content
 
   .content: .container-fluid#app: .card
     .card-header.d-flex.justify-content-between.align-items-center
-      h3.flex-fill.card-title Categories
+      h3.flex-fill.card-title Products
       .flex-shrink-1.card-tools
         a.btn.btn-sm.btn-primary.pull-right(title='Create Product', href="/product/create")
           | New
@@ -39,7 +39,7 @@ block content
             label(for='keyword') Search
             input#search.form-control(v-model="keyword" type='text' placeholder='Search...')
 
-        .card(v-for="(product, index) in categories" :key="product._id").d-md-none
+        .card(v-for="(product, index) in products" :key="product._id").d-md-none
           .card-header: h3.card-title {{ product.name }}
           .card-body
             dl.row
@@ -71,7 +71,7 @@ block content
               th Properties
               th Actions
           tbody
-            tr(v-for="(product, index) in categories" :key="product._id")
+            tr(v-for="(product, index) in products" :key="product._id")
               td {{ getSerial(index) }}
               td {{ product.name }}
               td {{ cutter({ text: product.description, length: 40 }) }}
@@ -90,7 +90,7 @@ block content
     .card-footer.d-flex.justify-content-center(v-if="pagination.totalPages > 1")
       paginate(
         :page-count='pagination.totalPages'
-        :click-handler='getCategories'
+        :click-handler='getProducts'
         prev-text='«'
         next-text='»'
         container-class="pagination"
@@ -103,9 +103,9 @@ block content
       )
 
 block body_js_after
-  script(src=assetUrl + "/js/admin/category_list.js")
+  script(src=assetUrl + "/js/admin/product_list.js")
 
 block body_js_before_inline
   script
-    | var categories = !{JSON.stringify(categories)};
+    | var products = !{JSON.stringify(products)};
     | var meta = !{JSON.stringify(meta)};

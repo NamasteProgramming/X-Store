@@ -1,6 +1,6 @@
 extends ../master/default/layout
 block content
-  .container.mt-5
+  .container.mt-5: .row: .col-lg-4.offset-lg-4
     h1 Registration
     +alert(message)
 
@@ -58,7 +58,7 @@ block content
           required
         )
 
-      .form-group.form-check
+      .form-group.form-check.mb-2
         input.form-check-input#agree(type='checkbox')
         label.form-check-label(for='agree') I agree
 
