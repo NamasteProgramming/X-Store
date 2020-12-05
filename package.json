@@ -19,9 +19,8 @@
   "author": "Namaste Programming",
   "license": "ISC",
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "bcrypt": "^4.0.1",
-    "body-parser": "^1.19.0",
+    "joi": "^17.1.1",
+    "bcrypt": "^5.0.0",
     "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
