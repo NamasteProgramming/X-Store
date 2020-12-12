@@ -70,6 +70,14 @@ const app = new Vue({
       return ((this.meta.pageNo - 1) * this.meta.pageSize) + number + 1
     },
 
+    getPropertyNames (category) {
+      const properties = []
+      category.properties.map(propperty => {
+        properties.push(propperty.name)
+      })
+      return properties.join(', ')
+    },
+
     _getCategories: debounce(function () {
       this.getCategories(this.currentPageNo)
     }, 1000)

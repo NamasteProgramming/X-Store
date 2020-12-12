@@ -1,8 +1,11 @@
 doctype
 html
-  head: include ./partials/head
+  head
+    include ./partials/head
+    block inline_style
   body
     include ./helpers/mixins
     include ./partials/nav
     block content
     block footer
+    include ./partials/footer

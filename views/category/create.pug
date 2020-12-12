@@ -1,7 +1,7 @@
 extends ../master/panel/layout
 block content
   .content-header: .container-fluid: .row.mb-2
-    .col-sm-6: h1.m-0.text-dark Create Category
+    .col-sm-6: h1.m-0 Create Category
     .col-sm-6: ol.breadcrumb.float-sm-right
       li.breadcrumb-item: a(href="/dashboard") Home
       li.breadcrumb-item.active Category
@@ -291,7 +291,7 @@ block content
                   span.d-xl-none Delete
 
           .col-md-12: hr
-    .card-footer: button.btn.btn-primary(type='submit') Submit
+    .card-footer: button.btn.btn-primary(type='submit') Create New Category
 
 block body_js_after
   script(src=assetUrl + "/js/admin/category_create.js")

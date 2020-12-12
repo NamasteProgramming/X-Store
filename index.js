@@ -42,6 +42,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.assetUrl = config.assetUrl
   res.locals.user = req.isAuthenticated() ? req.user : null
+  app.locals.pretty = process.env.NODE_ENV !== 'production' // pretty output
   return next()
 })
 

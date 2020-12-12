@@ -22,8 +22,13 @@ const app = new Vue({
       console.log(JSON.stringify(this.category))
       axios.post('/api/v1/category', this.category)
         .then(result => {
-          console.log(result)
-          console.log(result.data)
+          Swal.fire(
+            'Created!',
+            'New category created successfully',
+            'success'
+          ).then(_ => {
+            window.location = '/category'
+          })
         })
     },
 

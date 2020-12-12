@@ -1,14 +1,20 @@
 extends ../master/panel/layout
 block content
   .content-header: .container-fluid: .row.mb-2
-    .col-sm-6: h1.m-0.text-dark Category List
+    .col-sm-6: h1.m-0 Category List
     .col-sm-6: ol.breadcrumb.float-sm-right
       li.breadcrumb-item: a(href="/dashboard") Home
       li.breadcrumb-item.active Category
 
   .content: .container-fluid#app: .card
-    .card-header
-      h3.card-title Categories
+    .card-header.d-flex.justify-content-between.align-items-center
+      //- h3.card-title Categories
+      h3.flex-fill.card-title SRT
+      .flex-shrink-1.card-tools
+      a.btn.btn-sm.btn-primary.pull-right(href="/category/create")
+        | New
+        | #{' '}
+        i.fas.fa-fw.fa-plus-circle
     .card-body
       loading(
         color="#007BFF"
@@ -17,63 +23,57 @@ block content
         :active='isLoading'
         :is-full-page='true'
       )
-      .row
-        .col-sm-6.col-md-6: .form-group
-          label(for='page_size') Page Size
-          select#page_size.custom-select(v-model="pageSize")
-            option 10
-            option 25
-            option 50
-            option 100
-            option 500
+      template(v-if="categories.length")
+        .row
+          .col-sm-6.col-md-6: .form-group
+            label(for='page_size') Page Size
+            select#page_size.custom-select(v-model="pageSize")
+              option 10
+              option 25
+              option 50
+              option 100
+              option 500
 
-        .col-sm-6.col-md-6: .form-group
-          label(for='keyword') Search
-          input#search.form-control(v-model="keyword" type='text' placeholder='Search...')
+          .col-sm-6.col-md-6: .form-group
+            label(for='keyword') Search
+            input#search.form-control(v-model="keyword" type='text' placeholder='Search...')
 
-      .card(v-for="(category, index) in categories" :key="category._id").d-md-none
-        .card-header: h3.card-title {{ category.name }}
-        .card-body
-          dl.row
-            dt.col-sm-4 Category Name
-            dd.col-sm-8 {{ category.name }}
-            dt.col-sm-4 Category Name
-            dd.col-sm-8 {{ category.name }}
-            dt.col-sm-4 Category Name
-            dd.col-sm-8 {{ category.name }}
-            dt.col-sm-4 Category Name
-            dd.col-sm-8 {{ category.name }}
-        .card-footer
-          button.btn.btn-danger(@click="destroy(category._id)") Delete
-          a.btn.btn-secondary.mx-1(href="/category/create") Edit
+        .card(v-for="(category, index) in categories" :key="category._id").d-md-none
+          .card-header: h3.card-title {{ category.name }}
+          .card-body
+            dl.row
+              dt.col-sm-4 Name
+              dd.col-sm-8 {{ category.name }}
+              template(v-if="category.properties.length")
+                dt.col-sm-4 Properties
+                dd.col-sm-8 {{ getPropertyNames(category) }}
+          .card-footer
+            button.btn.btn-danger(@click="destroy(category._id)") Delete
+            a.btn.btn-secondary.mx-1(href="/category/create") Edit
 
-      table.table.table-bordered.d-none.d-md-table
-        thead
-          tr
-            th(style='width: 10px') #
-            th Name
-            th Name
-            th Name
-            th Name
-            th Name
-            th Name
-            th Name
-            th Actions
-        tbody
-          tr(v-for="(category, index) in categories" :key="category._id")
-            td {{ getSerial(index) }}
-            td {{ category.name }}
-            td {{ category.name }}
-            td {{ category.name }}
-            td {{ category.name }}
-            td {{ category.name }}
-            td {{ category.name }}
-            td {{ category.name }}
-            td
-              button.btn.btn-danger(@click="destroy(category._id)") Delete
-              a.btn.btn-secondary.mx-1(href="/category/create") Edit
-
-    .card-footer.d-flex.justify-content-center
+        table.table.table-bordered.d-none.d-md-table
+          thead
+            tr
+              th(style='width: 10px') #
+              th Name
+              th Properties
+              th Actions
+          tbody
+            tr(v-for="(category, index) in categories" :key="category._id")
+              td {{ getSerial(index) }}
+              td {{ category.name }}
+              td {{ getPropertyNames(category) }}
+              td
+                a.btn.btn-secondary.mx-1(href="/category/create") Edit
+                button.btn.btn-danger(@click="destroy(category._id)") Delete
+      div(v-else)
+        h1.text-center.mt-5.mb-0.h3
+          | There are no categories
+        img.w-100.img-fluid.pt-4(
+          src=assetUrl + "/svg/no_item.svg"
+          alt='Empty Canvas and a girl'
+        )
+    .card-footer.d-flex.justify-content-center(v-if!="pagination.totalPages > 1")
       paginate(
         :page-count='pagination.totalPages'
         :click-handler='getCategories'
