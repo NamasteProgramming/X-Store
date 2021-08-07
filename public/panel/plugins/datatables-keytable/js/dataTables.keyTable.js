@@ -1,15 +1,15 @@
-/*! KeyTable 2.5.3
- * ©2009-2020 SpryMedia Ltd - datatables.net/license
+/*! KeyTable 2.6.1
+ * ©2009-2021 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     KeyTable
  * @description Spreadsheet like keyboard navigation for DataTables
- * @version     2.5.3
+ * @version     2.6.1
  * @file        dataTables.keyTable.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
- * @copyright   Copyright 2009-2020 SpryMedia Ltd.
+ * @copyright   Copyright 2009-2021 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license/mit
@@ -132,6 +132,13 @@ $.extend( KeyTable.prototype, {
 	},
 
 	/**
+	 * Get enable status
+	 */
+	enabled: function () {
+		return this.s.enable;
+	},
+
+	/**
 	 * Focus on a cell
 	 * @param  {integer} row    Row index
 	 * @param  {integer} column Column index
@@ -224,7 +231,10 @@ $.extend( KeyTable.prototype, {
 				}
 
 				// Or an Editor date input
-				if ( $(e.target).parents('div.editor-datetime').length ) {
+				if (
+					$(e.target).parents('div.editor-datetime').length ||
+					$(e.target).parents('div.dt-datetime').length 
+				) {
 					return;
 				}
 
@@ -513,6 +523,11 @@ $.extend( KeyTable.prototype, {
 			return;	
 		}
 
+		// DataTables draw event
+		if (orig && orig.type === 'draw') {
+			return;
+		}
+
 		var that = this;
 		var dt = this.s.dt;
 		var editor = this.c.editor;
@@ -536,12 +551,14 @@ $.extend( KeyTable.prototype, {
 			return;
 		}
 
-		orig.stopPropagation();
+		if ( orig ) {
+			orig.stopPropagation();
 
-		// Return key should do nothing - for textareas it would empty the
-		// contents
-		if ( key === 13 ) {
-			orig.preventDefault();
+			// Return key should do nothing - for textareas it would empty the
+			// contents
+			if ( key === 13 ) {
+				orig.preventDefault();
+			}
 		}
 
 		var editInline = function () {
@@ -587,6 +604,11 @@ $.extend( KeyTable.prototype, {
 						dt.off( 'key-blur.editor' );
 						editor.off( namespace );
 						$( dt.table().container() ).removeClass('dtk-focus-alt');
+
+						if (that.s.returnSubmit) {
+							that.s.returnSubmit = false;
+							that._emitEvent( 'key-return-submit', [dt, editCell] );
+						}
 					} );
 				} )
 				.one( 'cancelOpen'+namespace, function () {
@@ -778,6 +800,10 @@ $.extend( KeyTable.prototype, {
 		}
 
 		var enable = this.s.enable;
+		this.s.returnSubmit = (enable === 'navigation-only' || enable === 'tab-only') && e.keyCode === 13
+			? true
+			: false;
+
 		var navEnable = enable === true || enable === 'navigation-only';
 		if ( ! enable ) {
 			return;
@@ -961,13 +987,17 @@ $.extend( KeyTable.prototype, {
 	 */
 	_shift: function ( e, direction, keyBlurable )
 	{
-		var that         = this;
-		var dt           = this.s.dt;
-		var pageInfo     = dt.page.info();
-		var rows         = pageInfo.recordsDisplay;
-		var currentCell  = this.s.lastFocus.cell;
-		var columns      = this._columns();
-
+		var that      = this;
+		var dt        = this.s.dt;
+		var pageInfo  = dt.page.info();
+		var rows      = pageInfo.recordsDisplay;
+		var columns   = this._columns();
+		var last      = this.s.lastFocus;
+		if ( ! last ) {
+			return;
+		}
+	
+		var currentCell  = last.cell;
 		if ( ! currentCell ) {
 			return;
 		}
@@ -1180,7 +1210,7 @@ KeyTable.defaults = {
 
 
 
-KeyTable.version = "2.5.3";
+KeyTable.version = "2.6.1";
 
 
 $.fn.dataTable.KeyTable = KeyTable;
@@ -1217,6 +1247,18 @@ DataTable.Api.register( 'keys.enable()', function ( opts ) {
 			ctx.keytable.enable( opts === undefined ? true : opts );
 		}
 	} );
+} );
+
+DataTable.Api.register( 'keys.enabled()', function ( opts ) {
+	var ctx = this.context;
+
+	if (ctx.length) {
+		return ctx[0].keytable
+			? ctx[0].keytable.enabled()
+			: false;
+	}
+
+	return false;
 } );
 
 DataTable.Api.register( 'keys.move()', function ( dir ) {

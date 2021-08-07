@@ -411,7 +411,7 @@
             return null;
 
           case "list-literal":
-            if (stream.match(/\]/)) {
+            if (stream.match(']')) {
               state.soyState.pop();
               state.lookupVariables = true;
               popcontext(state);
@@ -463,8 +463,15 @@
             return null;
 
           case "tag":
-            var endTag = state.tag[0] == "/";
-            var tagName = endTag ? state.tag.substring(1) : state.tag;
+            var endTag;
+            var tagName;
+            if (state.tag === undefined) {
+              endTag = true;
+              tagName = '';
+            } else {
+              endTag = state.tag[0] == "/";
+              tagName = endTag ? state.tag.substring(1) : state.tag;
+            }
             var tag = tags[tagName];
             if (stream.match(/^\/?}/)) {
               var selfClosed = stream.current() == "/}";
@@ -510,14 +517,14 @@
             }
             return expression(stream, state);
           case "literal":
-            if (stream.match(/^(?=\{\/literal})/)) {
+            if (stream.match('{/literal}', false)) {
               state.soyState.pop();
               return this.token(stream, state);
             }
             return tokenUntil(stream, state, /\{\/literal}/);
         }
 
-        if (stream.match(/^\{literal}/)) {
+        if (stream.match('{literal}')) {
           state.indent += config.indentUnit;
           state.soyState.push("literal");
           state.context = new Context(state.context, "literal", state.variables);
@@ -574,14 +581,13 @@
           state.soyState.push("import");
           state.indent += 2 * config.indentUnit;
           return "keyword";
-        } else if (match = stream.match(/^<\{/)) {
+        } else if (match = stream.match('<{')) {
           state.soyState.push("template-call-expression");
-          state.tag = "print";
           state.indent += 2 * config.indentUnit;
           state.soyState.push("tag");
           return "keyword";
-        } else if (match = stream.match(/^<\/>/)) {
-          state.indent -= 2 * config.indentUnit;
+        } else if (match = stream.match('</>')) {
+          state.indent -= 1 * config.indentUnit;
           return "keyword";
         }
 

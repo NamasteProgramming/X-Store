@@ -72,7 +72,7 @@
   padding: 0;
 }
 .swal2-popup.swal2-toast .swal2-styled {
-  margin: 0 0.3125em;
+  margin: 0.125em 0.3125em;
   padding: 0.3125em 0.625em;
   font-size: 1em;
 }
@@ -559,7 +559,6 @@
 }
 
 .swal2-validation-message {
-  display: none;
   align-items: center;
   justify-content: center;
   margin: 0 -2.7em;
@@ -594,6 +593,7 @@
   margin: 1.25em auto 1.875em;
   border: 0.25em solid transparent;
   border-radius: 50%;
+  border-color: #000;
   font-family: inherit;
   line-height: 5em;
   cursor: default;
